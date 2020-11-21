@@ -24,11 +24,11 @@ export const RoundContainer = ({}: RoundContainerProps) => {
     return <WaitInRound />;
   }
 
-  if (me.id === activePlayer.id) {
+  if (me?.id === activePlayer.id) {
     return <PresentInRound />;
   }
 
-  if (me.team === activePlayer.team) {
+  if (me?.team === activePlayer.team) {
     return <GuessInRound />;
   }
 

@@ -22,3 +22,10 @@ export type Game = {
   rounds?: Round[];
   players?: Player[];
 };
+
+export type GameInfo = {
+  id: string;
+  players: Player[];
+};
+
+export type GameState = Game & { rounds: Round[]; round: number };

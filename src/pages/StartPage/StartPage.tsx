@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Player } from '../../types/player';
 import EnterUserInfo from './components/EnterUserInfo';
 import If from '../../components/If';
 import SelectGame from './components/SelectGame';
-import { Game } from '../../types/game';
 import { useHistory } from 'react-router';
 import { getLobbyUrl } from '../../url';
+import { StreamContext } from '../../App';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface StartPageProps {}
@@ -18,24 +18,28 @@ enum StartStep {
 
 export const StartPage = ({}: StartPageProps) => {
   const [player, setPlayer] = useState<Player>({ name: '22', emoji: '22' });
-  const [game, setGame] = useState<Game>({ id: '' });
   const [step, setStep] = useState(StartStep.SELECT_GAME);
 
   const history = useHistory();
+  const context = useContext(StreamContext);
 
   const updatePlayer = (updatedPlayer: Partial<Player>) => {
     setPlayer({ ...player, ...updatedPlayer });
   };
 
-  const updateGame = (updatedGame: Partial<Game>) => {
-    setGame({ ...game, ...updatedGame });
+  const updateGame = (id?: string) => {
+    if (id && context.gameSocket) {
+      context.gameSocket.joinGame(id, player.name);
+    } else if (context.gameSocket) {
+      context.gameSocket.createGame(player.name, undefined);
+    }
   };
 
   useEffect(() => {
-    if (game.id) {
-      history.push(getLobbyUrl(game.id));
+    if (context.gameInfo?.id) {
+      history.push(getLobbyUrl(context.gameInfo.id));
     }
-  }, [game]);
+  }, [context.gameInfo]);
 
   return (
     <Fragment>

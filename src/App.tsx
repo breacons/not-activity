@@ -7,13 +7,13 @@ import io from 'socket.io-client';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { URL_LOBBY, URL_GAME, URL_START, URL_GAMES, URL_LOBBIES } from './url';
 import StartPage from './pages/StartPage';
-import LobbyPage, { defaultPlayers } from './pages/LobbyPage';
+import LobbyPage from './pages/LobbyPage';
 import GamePage from './pages/GamePage';
-import { Game, Round, RoundType } from './types/game';
+import { Game, GameInfo, GameState, Round, RoundType } from './types/game';
 import { Player } from './types/player';
-import { getCurrentRound } from './util/game-round';
+import { GameSocket } from './socket/gameSocket';
 
-const ENDPOINT = 'http://127.0.0.1:3012';
+const ENDPOINT = 'http://127.0.0.1:3001';
 const socket = io(ENDPOINT);
 
 const configuration = {
@@ -46,11 +46,12 @@ const constraints = {
   },
 };
 
-
 const usePeerAndSocket = (localStream: MediaStream | null) => {
   const [peers, setPeers] = useState<{ [key: string]: SimplePeer.Instance }>({});
   const [streams, setStreams] = useState<{ [key: string]: MediaStream }>({});
-  const [game, setGame] = useState(defaultGame);
+  const [game, setGame] = useState<GameState>();
+  const [gameInfo, setGameInfo] = useState<GameInfo>();
+  const [gameSocket, setGameSocket] = useState<GameSocket>();
 
   const addPeer = (socket_id: string, am_initiator: boolean, socket: any) => {
     const newPeer = new SimplePeer({
@@ -91,7 +92,7 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
       console.log('INIT RECEIVE ' + socket_id);
       addPeer(socket_id, false, socket);
 
-      socket.emit('initSend', socket_id);
+      socket.emit('initSend', { init_socket_id: socket_id });
     });
 
     socket.on('initSend', (socket_id: string) => {
@@ -110,6 +111,7 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
         removePeer(socket_id);
       }
     });
+
     return () => {
       console.log('Destroying');
       socket.off('initReceive');
@@ -118,6 +120,22 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
       socket.off('disconnect');
     };
   }, [peers]);
+
+  useEffect(() => {
+    const gameSocket = new GameSocket(socket, {
+      onGameInfo: (gameInfo) => {
+        setGameInfo(gameInfo);
+      },
+      onGameState: (gameState) => {
+        setGame(gameState);
+      },
+    });
+
+    setGameSocket(gameSocket);
+    return () => {
+      gameSocket.destroy();
+    };
+  }, [socket]);
 
   useEffect(() => {
     if (socket) {
@@ -142,49 +160,45 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
     }
   }, [localStream]);
 
-  return { peers, streams, game };
-};
 
-const generateRound = () => ({
-  roundNumber: 0,
-  timeLeft: Math.floor(Math.random() * 59) + 1,
-  activePlayer: defaultPlayers[0],
-  roundType: RoundType.show, // TODO: enum should be uppercase
-  answer: 'car',
-});
-
-const defaultGame = {
-  id: '56473892',
-  round: 0, // TODO: start from  0 or 1?
-  rounds: [generateRound()],
-  players: defaultPlayers,
+  return { peers, streams, game, gameInfo, gameSocket };
 };
 
 export const StreamContext = React.createContext({
-  game: {} as Game,
-  me: {} as Player,
+  game: {} as GameState | undefined,
+  gameInfo: {} as GameInfo | undefined,
+  me: {} as Player | undefined,
   streams: {},
   setMyStream: (stream: MediaStream) => {
     return;
   },
-  round: {} as Round | null,
+  round: {} as Round | undefined,
+  gameSocket: {} as GameSocket | undefined,
 });
 
 const App = () => {
-  const [me, setMe] = useState(defaultPlayers[0]);
+  const [me, setMe] = useState<Player>();
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
 
-  const { peers, streams, game } = usePeerAndSocket(myStream);
+  const { peers, streams, game, gameInfo, gameSocket } = usePeerAndSocket(myStream);
   const myId = socket.id;
+
+  useEffect(() => {
+    if (gameInfo) {
+      setMe(gameInfo.players.find((p) => p.id === myId));
+    }
+  }, [gameInfo]);
 
   return (
     <StreamContext.Provider
       value={{
         me: me,
-        game: defaultGame,
+        game: game,
+        gameInfo: gameInfo,
         streams: streams,
         setMyStream: setMyStream,
-        round: getCurrentRound(game),
+        round: game?.rounds[game.round],
+        gameSocket: gameSocket,
       }}
     >
       <Router>
@@ -203,7 +217,8 @@ const App = () => {
         <div>Streams</div>
         <ul>
           {Object.entries(streams).map(([key, stream]) => (
-            <li key={key}>
+
+            <li key={stream.id}>
               {stream.id} ({key})
             </li>
           ))}
@@ -218,7 +233,7 @@ const App = () => {
           </Route>
 
           <Route exact path={URL_GAME}>
-            <GamePage me={me} game={defaultGame} setStream={setMyStream} />
+            {game && me && <GamePage me={me} game={game} setStream={setMyStream} />}
           </Route>
 
           <Redirect exact from={URL_GAMES} to={URL_START} />
