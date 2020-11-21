@@ -11,6 +11,8 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.6",
+    "@types/simple-peer": "^9.6.1",
+    "@types/socket.io-client": "^1.4.34",
     "@typescript-eslint/eslint-plugin": "4.0.1",
     "@typescript-eslint/parser": "4.0.1",
     "eslint": "^6.6.0",
@@ -24,6 +26,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "simple-peer": "^9.9.3",
+    "socket.io-client": "^2.3.0",
     "typescript": "^3.7.5"
   },
   "scripts": {
