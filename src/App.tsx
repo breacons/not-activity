@@ -190,6 +190,7 @@ const App = () => {
   useEffect(() => {
     if (gameInfo) {
       setMe(gameInfo.players.find((p) => p.id === myId));
+      navigator.clipboard.writeText(gameInfo.id);
     }
   }, [gameInfo]);
 

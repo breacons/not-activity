@@ -91,6 +91,7 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
     <Fragment>
       <hr />
       <h1>Watching</h1>
+      <h4>Left: {round?.timeLeft} seconds</h4>
       <h5>Incoming: {getDisplayedStream(streams)?.id}</h5>
       {getPresentByType()}
       {/*<video ref={videoRef} style={{ transform: 'scaleX(-1)' }} />*/}
