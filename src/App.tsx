@@ -154,12 +154,13 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
 
   useEffect(() => {
     if (localStream) {
+      console.log('Adding localStream', localStream);
       for (const [key, peer] of Object.entries(peers)) {
+        console.log(`Adding stream to peer ${key} ${peer}`);
         peer.addStream(localStream);
       }
     }
   }, [localStream]);
-
 
   return { peers, streams, game, gameInfo, gameSocket };
 };
@@ -217,7 +218,6 @@ const App = () => {
         <div>Streams</div>
         <ul>
           {Object.entries(streams).map(([key, stream]) => (
-
             <li key={stream.id}>
               {stream.id} ({key})
             </li>
