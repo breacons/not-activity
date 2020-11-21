@@ -7,17 +7,12 @@ import { useHistory } from 'react-router';
 import { getLobbyUrl } from '../../url';
 import { StreamContext } from '../../App';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface StartPageProps {}
-
 enum StartStep {
   USER_INFO = 'USER_INFO',
   SELECT_GAME = 'SELECT_GAME',
-  GAME_INFO = 'GAME_INFO',
 }
 
 // TODO: remove these from prod
-
 function makeid(length: number) {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -28,7 +23,7 @@ function makeid(length: number) {
   return result;
 }
 
-export const StartPage = ({}: StartPageProps) => {
+export const StartPage = () => {
   const [step, setStep] = useState(StartStep.SELECT_GAME);
   const [player, setPlayer] = useState({ name: makeid(8), emoji: '😅' });
   const history = useHistory();

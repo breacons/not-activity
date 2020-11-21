@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PresentInRound from './PresentInRound/PresentInRound';
-import WaitInRound from './WaitInRound';
-import { StreamContext } from '../../../../App';
+import WaitInRound from './WaitInRound/WaitInRound';
+import { StreamContext } from '../../App';
 
 interface RoundContainerProps {}
 

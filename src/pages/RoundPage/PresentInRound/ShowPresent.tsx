@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, Fragment, useRef, useState } from 'react';
-import { StreamContext } from '../../../../../App';
-import WaveLength from '../WaveLength';
-import {setVideo} from "../../../../../util/set-video";
+import { StreamContext } from '../../../App';
+import { setVideo } from '../../../util/set-video';
 
 interface ShowPresentProps {}
 

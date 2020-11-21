@@ -1,10 +1,10 @@
 import React, { Fragment, useContext } from 'react';
-import { Round, RoundType } from '../../../../../types/game';
-import { Player } from '../../../../../types/player';
+import { Round, RoundType } from '../../../types/game';
+import { Player } from '../../../types/player';
 import DrawPresent from './DrawPresent';
 import TalkPresent from './TalkPresent';
 import ShowPresent from './ShowPresent';
-import { StreamContext } from '../../../../../App';
+import { StreamContext } from '../../../App';
 
 interface PresentInRoundProps {}
 

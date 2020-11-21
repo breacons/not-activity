@@ -1,15 +1,26 @@
 import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
-import { Round, RoundType } from '../../../../types/game';
-import { Player } from '../../../../types/player';
-import { StreamContext } from '../../../../App';
+import { RoundType } from '../../../types/game';
+import { StreamContext } from '../../../App';
 
-import WaveLength from './WaveLength';
-import If from '../../../../components/If';
-import { setAudio, setVideo } from '../../../../util/set-video';
+import WaveLength from '../WaveLength';
+import If from '../../../components/If';
+import { setAudio, setVideo } from '../../../util/set-video';
 
-interface WaitInRoundProps {}
+import styles from './WaitInRound.module.sass';
 
-export const WaitInRound = ({}: WaitInRoundProps) => {
+// HTML5 Video cannot be styled from sass
+const fullScreenStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  bottom: 0,
+  right: 0,
+  zIndex: -1000,
+  width: '100%',
+  height: '100vh',
+};
+
+export const WaitInRound = () => {
   const { round, streams, gameSocket, me } = useContext(StreamContext);
   const [solution, setSolution] = useState<string>('');
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -48,14 +59,13 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
 
   const getPresentByType = () => {
     if (round.roundType === RoundType.draw) {
-      return <video ref={videoRef} style={{ position: 'absolute', left: '0px', zIndex: 10 }} />;
+      return <video ref={videoRef} style={fullScreenStyle} />;
     }
 
     if (round.roundType === RoundType.show) {
       return (
         <Fragment>
-          <video ref={videoRef} style={{ transform: 'scaleX(-1)' }} />
-          {/*<WaveLength stream={getDisplayedStream(streams)} />;*/}
+          <video ref={videoRef} style={fullScreenStyle} />
         </Fragment>
       );
     }
@@ -72,7 +82,7 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
 
   return (
     <Fragment>
-      <h1>Watching</h1>
+      <h1 className={styles.heading}>Watching!!!</h1>
       {getPresentByType()}
       <If
         condition={me?.team === round?.activePlayer.team || round?.timeLeft <= 10}
