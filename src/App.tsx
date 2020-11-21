@@ -149,7 +149,7 @@ const generateRound = () => ({
   roundNumber: 0,
   timeLeft: Math.floor(Math.random() * 59) + 1,
   activePlayer: defaultPlayers[0],
-  roundType: RoundType.draw, // TODO: enum should be uppercase
+  roundType: RoundType.show, // TODO: enum should be uppercase
   answer: 'car',
 });
 
@@ -203,7 +203,7 @@ const App = () => {
         <div>Streams</div>
         <ul>
           {Object.entries(streams).map(([key, stream]) => (
-            <li>
+            <li key={key}>
               {stream.id} ({key})
             </li>
           ))}

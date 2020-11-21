@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, Fragment, useRef, useState } from 'react';
-import { Round } from '../../../../../types/game';
-import { Player } from '../../../../../types/player';
 import { StreamContext } from '../../../../../App';
+import WaveLength from '../WaveLength';
 
 interface ShowPresentProps {}
 
@@ -27,6 +26,10 @@ export const ShowPresent = ({}: ShowPresentProps) => {
 
   useEffect(() => {
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+      for (const index in stream.getAudioTracks()) {
+        stream.getAudioTracks()[index].enabled = true;
+      }
+
       context.setMyStream(stream);
       setLocalStream(stream);
     });
@@ -39,14 +42,14 @@ export const ShowPresent = ({}: ShowPresentProps) => {
     videoRef.current.playsinline = false;
     videoRef.current.autoplay = true;
     videoRef.current.className = 'vid';
-    videoRef.current.muted = true;
+    videoRef.current.muted = false;
   }, [localStream]);
 
   return (
     <Fragment>
-
       Stream id: {localStream?.id}
       <video ref={videoRef} style={{ transform: 'scaleX(-1)' }} />
+      <WaveLength stream={localStream} />
     </Fragment>
   );
 };

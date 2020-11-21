@@ -14,7 +14,7 @@ interface CanvasElement extends HTMLCanvasElement {
 export const DrawPresent = ({}: DrawPresentProps) => {
   const canvas = useRef<HTMLCanvasElement>(null);
   const { round, setMyStream } = useContext(StreamContext);
-  const [stream, setLocalStream] = useState<MediaStream | null>(null);
+  const [stream, setLocalStream] = useState<MediaStream | null>();
   const videoRef = useRef<any>(null);
   const pos = { x: 0, y: 0 };
 
@@ -28,7 +28,7 @@ export const DrawPresent = ({}: DrawPresentProps) => {
       setLocalStream(stream);
       setMyStream(stream);
 
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = 'green';
       ctx.fillRect(0, 0, 300, 500);
 
       const setPosition = (x: number, y: number) => {
@@ -116,7 +116,7 @@ export const DrawPresent = ({}: DrawPresentProps) => {
     // } catch (error) {
     //   videoRef.current.src = URL.createObjectURL(stream);
     // }
-  }, [stream]);
+  }, [stream, videoRef]);
 
   return (
     <Fragment>
@@ -131,11 +131,11 @@ export const DrawPresent = ({}: DrawPresentProps) => {
         ref={canvas}
         width={300}
         height={500}
-        style={{ border: '5px red solid', position: 'absolute', marginBottom: 600 }}
+        style={{ border: '5px red solid', position: 'fixed' }}
       />
       <hr />
       Stream in video: {stream?.id}
-      <video ref={videoRef} style={{ position: 'absolute', top: '1050px', zIndex: -10 }} />
+      <video ref={videoRef} style={{ position: 'absolute', left: '300px', zIndex: -10 }} />
     </Fragment>
   );
 };
