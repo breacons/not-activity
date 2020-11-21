@@ -32,6 +32,7 @@ export const PresentInRound = ({}: PresentInRoundProps) => {
   return (
     <div>
       <h1>Presenting</h1>
+      <h4>Left: {round?.timeLeft} seconds</h4>
       {getPresentByType()}
     </div>
   );
