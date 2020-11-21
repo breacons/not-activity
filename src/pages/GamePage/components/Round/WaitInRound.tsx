@@ -11,8 +11,6 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
   const context = useContext(StreamContext);
   const videoRef = useRef<any>();
 
-  console.log('Context', context);
-
   // TODO: update with socket
   const getDisplayedStream = (streams: any) => {
     if (Object.keys(streams).length === 0) {
@@ -28,7 +26,6 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
 
     if (!stream) return;
 
-    console.log('setting', stream);
     videoRef.current.srcObject = stream;
     videoRef.current.playsinline = false;
     videoRef.current.autoplay = true;
@@ -39,11 +36,12 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
   return (
     <Fragment>
       <hr />
+      <h1>Watching</h1>
       <video
         ref={videoRef}
         style={
           context.round?.roundType === RoundType.show
-            ? { '-webkit-transform': 'scaleX(-1)', transform: 'scaleX(-1)' }
+            ? { transform: 'scaleX(-1)' }
             : {}
         }
       />

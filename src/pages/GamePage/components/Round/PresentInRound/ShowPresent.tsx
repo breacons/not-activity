@@ -38,7 +38,6 @@ export const ShowPresent = ({}: ShowPresentProps) => {
   useEffect(() => {
     if (!localStream) return;
 
-    console.log('setting', localStream);
     videoRef.current.srcObject = localStream;
     videoRef.current.playsinline = false;
     videoRef.current.autoplay = true;
@@ -50,7 +49,7 @@ export const ShowPresent = ({}: ShowPresentProps) => {
     <Fragment>
       <h1>Presenting</h1>
       Stream id: {localStream?.id}
-      <video ref={videoRef} style={{ '-webkit-transform': 'scaleX(-1)', transform: 'scaleX(-1)' }} />
+      <video ref={videoRef} style={{ transform: 'scaleX(-1)' }} />
     </Fragment>
   );
 };

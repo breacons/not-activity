@@ -25,7 +25,7 @@ export const RoundContainer = ({}: RoundContainerProps) => {
   const activePlayer = round.activePlayer;
 
   if (gameId === '000') {
-    return <WaitInRound  />;
+    return <WaitInRound />;
   }
 
   if (me.id === activePlayer.id) {

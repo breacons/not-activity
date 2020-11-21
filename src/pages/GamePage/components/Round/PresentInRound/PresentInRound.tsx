@@ -16,6 +16,8 @@ interface PresentInRoundProps {
 export const PresentInRound = ({}: PresentInRoundProps) => {
   const { round, setMyStream } = useContext(StreamContext);
 
+  console.log('Presenting')
+
   if (!round) {
     return <div>Waiting for round</div>;
   }
