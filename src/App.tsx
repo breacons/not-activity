@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, HashRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
 
 import StartPage from './pages/StartPage';
 import LobbyPage from './pages/LobbyPage';
@@ -59,8 +59,8 @@ const App = () => {
         gameSocket: gameSocket,
       }}
     >
-      <Router>
-        <a href="/start">Start</a>
+      <HashRouter>
+        <Link to="/start">Start</Link>
         <br />
         <hr />
         <h3>Me</h3>
@@ -137,7 +137,7 @@ const App = () => {
           <Redirect exact from={URL_LOBBIES} to={URL_START} />
           <Redirect exact to={URL_START} />
         </Switch>
-      </Router>
+      </HashRouter>
     </StreamContext.Provider>
   );
 };
