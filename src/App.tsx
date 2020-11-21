@@ -8,7 +8,9 @@ import { URL_LOBBY, URL_GAME, URL_START, URL_GAMES, URL_LOBBIES } from './url';
 import StartPage from './pages/StartPage';
 import LobbyPage, { defaultPlayers } from './pages/LobbyPage';
 import GamePage from './pages/GamePage';
-import { RoundType } from './types/game';
+import { Game, Round, RoundType } from './types/game';
+import { Player } from './types/player';
+import { getCurrentRound } from './util/game-round';
 const ENDPOINT = 'http://127.0.0.1:3012';
 let socket: any;
 
@@ -51,6 +53,7 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
   const [peers, setPeers] = useState<{ [key: string]: SimplePeer.Instance }>({});
   const [streams, setStreams] = useState<{ [key: string]: MediaStream }>({});
   const [myId, setMyId] = useState('');
+  const [game, setGame] = useState(defaultGame);
   // console.log('usePeerAndSocket', peers, streams);
 
   const addPeer = (socket_id: string, am_initiator: boolean, socket: any) => {
@@ -158,78 +161,12 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
     if (localStream) {
       for (const [key, peer] of Object.entries(peers)) {
         peer.addStream(localStream);
-
       }
     }
-  }, [peers, socket]);
+  }, [localStream]);
 
-  return { peers, streams, myId };
+  return { peers, streams, myId, game };
 };
-
-function App2() {
-  console.log('App');
-  const [myStream, setMyStream] = useState<MediaStream | null>(null);
-
-  useEffect(() => {
-    navigator.mediaDevices.getUserMedia(constraints).then((stream) => setMyStream(stream));
-  }, []);
-
-  const { peers, streams, myId } = usePeerAndSocket(myStream);
-  const videoRef = useRef<any>();
-
-  console.log('App peers', peers, streams);
-
-  // Will run only on mount
-
-  // useEffect(() => {
-  //   console.log('useEffect');
-  //   const { name, room } = { name: 'marci', room: 'default' };
-  //
-  //   socket = io(ENDPOINT);
-  //
-  //   // setRoom(room);
-  //   // setName(name)
-  //
-  //   socket.emit('join', { name, room }, (error: any) => {
-  //     if (error) {
-  //       alert(error);
-  //     }
-  //   });
-  //
-  //   socket.on('initReceive', (socket_id: string) => {
-  //       console.log('INIT RECEIVE ' + socket_id);
-  //     });
-  // }, [ENDPOINT]);
-  useEffect(() => {
-    const allStream = Object.values(streams);
-
-    if (allStream.length === 0) return;
-    const stream = allStream[0];
-
-    console.log('VIDEO', videoRef, stream);
-
-    videoRef.current.srcObject = stream;
-    videoRef.current.id = Object.keys(streams)[0];
-    videoRef.current.playsinline = false;
-    videoRef.current.autoplay = true;
-    videoRef.current.className = 'vid';
-    videoRef.current.muted = true;
-
-    // try {
-    //   videoRef.current.srcObject = stream;
-    // } catch (error) {
-    //   videoRef.current.src = URL.createObjectURL(stream);
-    // }
-  }, [streams]);
-
-  return (
-    <div className="App">
-      <h3>Me: {myId}</h3>
-      <video ref={videoRef} style={{ '-webkit-transform': 'scaleX(-1)', transform: 'scaleX(-1)' }} />
-      peer: {Object.keys(streams)}
-    </div>
-  );
-}
 
 const generateRound = () => ({
   roundNumber: 0,
@@ -246,94 +183,72 @@ const defaultGame = {
   players: defaultPlayers,
 };
 
+export const StreamContext = React.createContext({
+  game: {} as Game,
+  me: {} as Player,
+  streams: {},
+  setMyStream: (stream: MediaStream) => {
+    return;
+  },
+  round: {} as Round | null,
+});
+
 const App = () => {
   const [me, setMe] = useState(defaultPlayers[0]);
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
 
-  useEffect(() => {
-    // navigator.mediaDevices.getUserMedia(constraints).then((stream) => setMyStream(stream));
-  }, []);
-
-  const { peers, streams, myId } = usePeerAndSocket(myStream);
-  const videoRef = useRef<any>();
-
-  console.log('App', streams);
-
-  useEffect(() => {
-    const allStream = Object.values(streams);
-
-    if (allStream.length === 0) return;
-    const stream = allStream[0];
-
-    // console.log('VIDEO', videoRef, stream);
-
-    videoRef.current.srcObject = stream;
-    videoRef.current.id = Object.keys(streams)[0];
-    videoRef.current.playsinline = false;
-    videoRef.current.autoplay = true;
-    videoRef.current.className = 'vid';
-    videoRef.current.muted = true;
-
-    // try {
-    //   videoRef.current.srcObject = stream;
-    // } catch (error) {
-    //   videoRef.current.src = URL.createObjectURL(stream);
-    // }
-  }, [streams]);
-
-  const getDisplayedStream = (streams: any) => {
-    if (Object.keys(streams).length === 0) {
-      return '-';
-    }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return Object.entries(streams)[0][1].id;
-  };
+  const { peers, streams, myId, game } = usePeerAndSocket(myStream);
 
   return (
-    <Router>
-      <span>Me: {myId}</span>
-      <br />
-      <span>Mystream: {myStream?.id}</span>
-      <br />
-      <hr />
-      <div>Peers</div>
-      <ul>
-        {Object.entries(peers).map(([key, peer]) => (
-          <li>{key}</li>
-        ))}
-      </ul>
-      <hr />
-      <div>Streams</div>
-      <ul>
-        {Object.entries(streams).map(([key, stream]) => (
-          <li>
-            {stream.id} ({key})
-          </li>
-        ))}
-      </ul>
-      <hr />
-      Displayed here: {getDisplayedStream(streams)}
-      <br />
-      <video ref={videoRef} />
-      <Switch>
-        <Route exact path={URL_START}>
-          <StartPage />
-        </Route>
+    <StreamContext.Provider
+      value={{
+        me: me,
+        game: defaultGame,
+        streams: streams,
+        setMyStream: setMyStream,
+        round: getCurrentRound(game),
+      }}
+    >
+      <Router>
+        <span>Me: {myId}</span>
+        <br />
+        <span>Mystream: {myStream?.id}</span>
+        <br />
+        <hr />
+        <div>Peers</div>
+        <ul>
+          {Object.entries(peers).map(([key, peer]) => (
+            <li>{key}</li>
+          ))}
+        </ul>
+        <hr />
+        <div>Streams</div>
+        <ul>
+          {Object.entries(streams).map(([key, stream]) => (
+            <li>
+              {stream.id} ({key})
+            </li>
+          ))}
+        </ul>
+        <Switch>
+          <Route exact path={URL_START}>
+            <StartPage />
+          </Route>
 
-        <Route exact path={URL_LOBBY}>
-          <LobbyPage />
-        </Route>
+          <Route exact path={URL_LOBBY}>
+            <LobbyPage />
+          </Route>
 
-        <Route exact path={URL_GAME}>
-          <GamePage me={me} game={defaultGame} setStream={setMyStream} />
-        </Route>
+          <Route exact path={URL_GAME}>
+            <GamePage me={me} game={defaultGame} setStream={setMyStream} />
+          </Route>
 
-        <Redirect exact from={URL_GAMES} to={URL_START} />
-        <Redirect exact from={URL_LOBBIES} to={URL_START} />
-        <Redirect exact from="/" to={URL_START} />
-      </Switch>
-    </Router>
+          <Redirect exact from={URL_GAMES} to={URL_START} />
+          <Redirect exact from={URL_LOBBIES} to={URL_START} />
+          <Redirect exact from="/" to={URL_START} />
+        </Switch>
+      </Router>
+    </StreamContext.Provider>
   );
 };
 

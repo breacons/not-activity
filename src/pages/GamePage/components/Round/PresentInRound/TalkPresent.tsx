@@ -1,6 +1,5 @@
 import React from 'react';
 import { Round } from '../../../../../types/game';
-import { Player } from '../../../../../types/player';
 
 interface TalkPresentProps {
   round: Round;

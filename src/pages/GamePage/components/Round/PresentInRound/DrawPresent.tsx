@@ -1,6 +1,6 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { Round } from '../../../../../types/game';
-import { Player } from '../../../../../types/player';
+import { StreamContext } from '../../../../../App';
 
 interface DrawPresentProps {
   round: Round;
@@ -13,8 +13,9 @@ interface CanvasElement extends HTMLCanvasElement {
 }
 
 // todo: disable scroll
-export const DrawPresent = ({ round, setStream }: DrawPresentProps) => {
+export const DrawPresent = ({}: DrawPresentProps) => {
   const canvas = useRef<HTMLCanvasElement>(null);
+  const { round, setMyStream } = useContext(StreamContext);
   const [stream, setLocalStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<any>(null);
   const pos = { x: 0, y: 0 };
@@ -27,7 +28,10 @@ export const DrawPresent = ({ round, setStream }: DrawPresentProps) => {
       const stream = current.captureStream(25);
 
       setLocalStream(stream);
-      setStream(stream)
+      setMyStream(stream);
+
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, 300, 500);
 
       const setPosition = (x: number, y: number) => {
         pos.x = x - current.offsetLeft;
@@ -54,7 +58,7 @@ export const DrawPresent = ({ round, setStream }: DrawPresentProps) => {
 
         ctx.lineWidth = 5;
         ctx.lineCap = 'round';
-        ctx.strokeStyle = 'black';
+        ctx.strokeStyle = 'blue';
 
         ctx.moveTo(pos.x, pos.y); // from
         setPosition(e.clientX, e.clientY);
@@ -87,7 +91,7 @@ export const DrawPresent = ({ round, setStream }: DrawPresentProps) => {
 
         ctx.lineWidth = 5;
         ctx.lineCap = 'round';
-        ctx.strokeStyle = 'black';
+        ctx.strokeStyle = 'blue';
 
         ctx.moveTo(pos.x, pos.y); // from
         setPosition(newX, newY);
@@ -119,13 +123,19 @@ export const DrawPresent = ({ round, setStream }: DrawPresentProps) => {
   return (
     <Fragment>
       <h4>
-        Draw this: <i>{round.answer}</i>
-        <br/>
+        Draw this: <i>{round?.answer}</i>
+        <br />
       </h4>
-      <hr/>
-      Canvas stream id: {stream?.id}<br/>
-      <canvas ref={canvas} width={300} height={500} style={{ border: '5px red solid', position: 'absolute', marginBottom: 600 }} />
-      <hr/>
+      <hr />
+      Canvas stream id: {stream?.id}
+      <br />
+      <canvas
+        ref={canvas}
+        width={300}
+        height={500}
+        style={{ border: '5px red solid', position: 'absolute', marginBottom: 600 }}
+      />
+      <hr />
       Stream in video: {stream?.id}
       <video ref={videoRef} style={{ position: 'absolute', top: '1050px', zIndex: -10 }} />
     </Fragment>
