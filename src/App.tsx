@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import StartPage from './pages/StartPage';
@@ -28,6 +28,73 @@ export const StreamContext = React.createContext({
   round: {} as Round | undefined,
   gameSocket: {} as GameSocket | undefined,
 });
+
+const Status = ({ me, game, myStream, peers, streams }: any) => {
+  return (
+    <div>
+      <a href="/start">Start</a>
+      <br />
+      <hr />
+      <h3>Me</h3>
+      <div>
+        Name: {me?.name} {me?.emoji}
+      </div>
+      <div>
+        Team:{' '}
+        <span style={{ color: me?.team === TEAM.RED ? 'red' : 'blue' }}>
+          <strong>{me?.team}</strong>
+        </span>
+      </div>
+      <div>
+        ID: <strong>{me?.id}</strong>
+      </div>
+      <div>Stream: {myStream?.id}</div>
+      <hr />
+      <h3>Game</h3>
+      <div>
+        Game: <strong>{game?.id}</strong>
+      </div>
+      <div>
+        My score: <strong>{me?.score}</strong>
+      </div>
+      <div>
+        Round: <strong>{game?.round}</strong>
+      </div>
+      <div>
+        Time: <strong>{game?.rounds[game.round].timeLeft}</strong>
+      </div>
+      <div>
+        Active player: <strong>{game?.rounds[game.round].activePlayer.name}</strong>
+      </div>
+      <div>
+        Round type: <strong>{game?.rounds[game.round].roundType}</strong>
+      </div>
+      <div>
+        Answer: <strong>{game?.rounds[game.round].answer}</strong>
+      </div>
+      <div>
+        <span style={{ color: 'red' }}>RED: {getTeamScore(TEAM.RED, game)}</span>{' '}
+        <span style={{ color: 'blue' }}>BLUE: {getTeamScore(TEAM.BLUE, game)}</span>
+      </div>
+      <hr />
+      <h3>Peers</h3>
+      <ul>
+        {Object.entries(peers).map(([key, peer]) => (
+          <li key={key}>{key}</li>
+        ))}
+      </ul>
+      <hr />
+      <h3>Streams</h3>
+      <ul>
+        {Object.entries(streams).map(([key, stream]: [string, any]) => (
+          <li key={stream.id}>
+            {stream.id} ({key})
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 const App = () => {
   const [me, setMe] = useState<Player>();
@@ -60,66 +127,6 @@ const App = () => {
       }}
     >
       <Router>
-        <a href="/start">Start</a>
-        <br />
-        <hr />
-        <h3>Me</h3>
-        <div>
-          Name: {me?.name} {me?.emoji}
-        </div>
-        <div>
-          Team:{' '}
-          <span style={{ color: me?.team === TEAM.RED ? 'red' : 'blue' }}>
-            <strong>{me?.team}</strong>
-          </span>
-        </div>
-        <div>
-          ID: <strong>{me?.id}</strong>
-        </div>
-        <div>Stream: {myStream?.id}</div>
-        <hr />
-        <h3>Game</h3>
-        <div>
-          Game: <strong>{game?.id}</strong>
-        </div>
-        <div>
-          My score: <strong>{me?.score}</strong>
-        </div>
-        <div>
-          Round: <strong>{game?.round}</strong>
-        </div>
-        <div>
-          Time: <strong>{game?.rounds[game.round].timeLeft}</strong>
-        </div>
-        <div>
-          Active player: <strong>{game?.rounds[game.round].activePlayer.name}</strong>
-        </div>
-        <div>
-          Round type: <strong>{game?.rounds[game.round].roundType}</strong>
-        </div>
-        <div>
-          Answer: <strong>{game?.rounds[game.round].answer}</strong>
-        </div>
-        <div>
-          <span style={{ color: 'red' }}>RED: {getTeamScore(TEAM.RED, game)}</span>{' '}
-          <span style={{ color: 'blue' }}>BLUE: {getTeamScore(TEAM.BLUE, game)}</span>
-        </div>
-        <hr />
-        <h3>Peers</h3>
-        <ul>
-          {Object.entries(peers).map(([key, peer]) => (
-            <li key={key}>{key}</li>
-          ))}
-        </ul>
-        <hr />
-        <h3>Streams</h3>
-        <ul>
-          {Object.entries(streams).map(([key, stream]) => (
-            <li key={stream.id}>
-              {stream.id} ({key})
-            </li>
-          ))}
-        </ul>
         <Switch>
           <Route exact path={URL_START}>
             <StartPage />
@@ -130,7 +137,15 @@ const App = () => {
           </Route>
 
           <Route exact path={URL_GAME}>
-            <If condition={game && me} then={() => <RoundContainer />} />
+            <If
+              condition={game && me}
+              then={() => (
+                <Fragment>
+                  <Status myStream={myStream} me={me} game={game} peers={peers} streams={streams} />
+                  <RoundContainer />
+                </Fragment>
+              )}
+            />
           </Route>
 
           <Redirect exact from={URL_GAMES} to={URL_START} />

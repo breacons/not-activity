@@ -24,7 +24,7 @@ function makeid(length: number) {
 }
 
 export const StartPage = () => {
-  const [step, setStep] = useState(StartStep.SELECT_GAME);
+  const [step, setStep] = useState(StartStep.USER_INFO);
   const [player, setPlayer] = useState({ name: makeid(8), emoji: '😅' });
   const history = useHistory();
   const context = useContext(StreamContext);

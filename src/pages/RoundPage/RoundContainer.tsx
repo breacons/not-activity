@@ -3,9 +3,7 @@ import PresentInRound from './PresentInRound/PresentInRound';
 import WaitInRound from './WaitInRound/WaitInRound';
 import { StreamContext } from '../../App';
 
-interface RoundContainerProps {}
-
-export const RoundContainer = ({}: RoundContainerProps) => {
+export const RoundContainer = () => {
   const { round, me } = useContext(StreamContext);
 
   if (!round) {

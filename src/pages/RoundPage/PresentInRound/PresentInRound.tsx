@@ -1,14 +1,11 @@
-import React, { Fragment, useContext } from 'react';
-import { Round, RoundType } from '../../../types/game';
-import { Player } from '../../../types/player';
+import React, { useContext } from 'react';
+import { RoundType } from '../../../types/game';
 import DrawPresent from './DrawPresent';
 import TalkPresent from './TalkPresent';
 import ShowPresent from './ShowPresent';
 import { StreamContext } from '../../../App';
 
-interface PresentInRoundProps {}
-
-export const PresentInRound = ({}: PresentInRoundProps) => {
+export const PresentInRound = () => {
   const { round } = useContext(StreamContext);
 
   if (!round) {

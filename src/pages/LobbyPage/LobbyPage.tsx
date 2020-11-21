@@ -1,14 +1,12 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import PlayerCard from './components/PlayerCard';
 import { getGameUrl } from '../../url';
 import If from '../../components/If';
 import { StreamContext } from '../../App';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface LobbyPageProps {}
 
-export const LobbyPage = ({}: LobbyPageProps) => {
+export const LobbyPage = ({}) => {
   const history = useHistory();
   const context = useContext(StreamContext);
   const gameInfo = context.gameInfo;
