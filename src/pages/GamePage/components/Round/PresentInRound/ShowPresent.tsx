@@ -48,6 +48,9 @@ export const ShowPresent = ({}: ShowPresentProps) => {
   return (
     <Fragment>
       Stream id: {localStream?.id}
+      <p>
+        Present this: <i>{context.round?.answer}</i>
+      </p>
       <video ref={videoRef} style={{ transform: 'scaleX(-1)' }} />
       <WaveLength stream={localStream} />
     </Fragment>

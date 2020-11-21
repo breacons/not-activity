@@ -4,7 +4,7 @@ import SimplePeer, { SignalData } from 'simple-peer';
 import _ from 'lodash';
 
 import io from 'socket.io-client';
-import {BrowserRouter as Router, Switch, Route, Redirect, useHistory} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import { URL_LOBBY, URL_GAME, URL_START, URL_GAMES, URL_LOBBIES } from './url';
 import StartPage from './pages/StartPage';
 import LobbyPage from './pages/LobbyPage';
@@ -190,9 +190,14 @@ const App = () => {
   useEffect(() => {
     if (gameInfo) {
       setMe(gameInfo.players.find((p) => p.id === myId));
-      navigator.clipboard.writeText(gameInfo.id);
     }
   }, [gameInfo]);
+
+  useEffect(() => {
+    if (game) {
+      setMe(game.players.find((p) => p.id === myId));
+    }
+  }, [game]);
 
   return (
     <StreamContext.Provider
@@ -208,7 +213,7 @@ const App = () => {
     >
       <Router>
         <a href="/start">Start</a>
-        <br/>
+        <br />
         <span>Me: {myId}</span>
         <br />
         <span>Mystream: {myStream?.id}</span>
@@ -245,7 +250,6 @@ const App = () => {
           <Redirect exact from={URL_GAMES} to={URL_START} />
           <Redirect exact from={URL_LOBBIES} to={URL_START} />
           <Redirect exact to={URL_START} />
-
         </Switch>
       </Router>
     </StreamContext.Provider>

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useRef } from 'react';
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { Round, RoundType } from '../../../../types/game';
 import { Player } from '../../../../types/player';
 import { StreamContext } from '../../../../App';
@@ -9,7 +9,8 @@ interface WaitInRoundProps {}
 
 // TODO: component: video display
 export const WaitInRound = ({}: WaitInRoundProps) => {
-  const { round, streams } = useContext(StreamContext);
+  const { round, streams, gameSocket } = useContext(StreamContext);
+  const [solution, setSolution] = useState<string>('');
   const videoRef = useRef<any>();
 
   // TODO: update with socket
@@ -65,7 +66,7 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
 
   const getPresentByType = () => {
     if (round.roundType === RoundType.draw) {
-      return  <video ref={videoRef} style={{ position: 'absolute', left: '0px', zIndex: 10 }} />
+      return <video ref={videoRef} style={{ left: '0px', zIndex: 10 }} />;
     }
 
     if (round.roundType === RoundType.show) {
@@ -94,6 +95,8 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
       <h4>Left: {round?.timeLeft} seconds</h4>
       <h5>Incoming: {getDisplayedStream(streams)?.id}</h5>
       {getPresentByType()}
+      <input type="text" onChange={(event) => setSolution(event.target.value)} />
+      <button onClick={() => gameSocket?.submitSolution(solution)}>Submit solution</button>
       {/*<video ref={videoRef} style={{ transform: 'scaleX(-1)' }} />*/}
     </Fragment>
   );

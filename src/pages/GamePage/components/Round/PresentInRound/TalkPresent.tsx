@@ -35,6 +35,9 @@ export const TalkPresent = ({}: TalkPresentProps) => {
   return (
     <Fragment>
       Stream id: {localStream?.id}
+      <p>
+        Describe this: <i>{context.round?.answer}</i>
+      </p>
       <br />
       <audio ref={videoRef} style={{ transform: 'scaleX(-1)', display: 'none' }} />
       <WaveLength stream={localStream} />

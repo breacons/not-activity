@@ -17,26 +17,22 @@ enum StartStep {
 }
 
 export const StartPage = ({}: StartPageProps) => {
-  const [player, setPlayer] = useState<Player>({ name: '22', emoji: '22' });
-  const [step, setStep] = useState(StartStep.SELECT_GAME);
-
+  const [step, setStep] = useState(StartStep.USER_INFO);
+  const [playerName, setPlayerName] = useState<string>('');
   const history = useHistory();
   const context = useContext(StreamContext);
 
-  const updatePlayer = (updatedPlayer: Partial<Player>) => {
-    setPlayer({ ...player, ...updatedPlayer });
-  };
-
   const updateGame = (id?: string) => {
     if (id && context.gameSocket) {
-      context.gameSocket.joinGame(id, player.name);
+      context.gameSocket.joinGame(id, playerName);
     } else if (context.gameSocket) {
-      context.gameSocket.createGame(player.name, undefined);
+      context.gameSocket.createGame(playerName, undefined);
     }
   };
 
   useEffect(() => {
     if (context.gameInfo?.id) {
+      navigator.clipboard.writeText(context.gameInfo.id);
       history.push(getLobbyUrl(context.gameInfo.id));
     }
   }, [context.gameInfo]);
@@ -51,8 +47,8 @@ export const StartPage = ({}: StartPageProps) => {
           condition={step === StartStep.USER_INFO}
           then={() => (
             <Fragment>
-              <EnterUserInfo updatePlayer={updatePlayer} />{' '}
-              <button disabled={!player.name || !player.emoji} onClick={() => setStep(StartStep.SELECT_GAME)}>
+              <EnterUserInfo updatePlayer={setPlayerName} />{' '}
+              <button disabled={!playerName} onClick={() => setStep(StartStep.SELECT_GAME)}>
                 Next
               </button>
             </Fragment>
