@@ -1,4 +1,5 @@
 import { GameInfo, GameState } from '../types/game';
+import {strict} from "assert";
 
 export class GameSocket {
   interval: number | undefined = undefined;
@@ -10,13 +11,13 @@ export class GameSocket {
     socket.on('gameState', (payload: GameState) => this.onGameState(payload));
   }
 
-  createGame(playerName: string, webRtc: any) {
-    this.socket.emit('createGame', { name: playerName, webRtc: webRtc });
+  createGame(playerName: string, webRtc: any, emoji: string) {
+    this.socket.emit('createGame', { name: playerName, webRtc: webRtc, emoji });
   }
 
-  joinGame(gameId: string, playerName: string) {
+  joinGame(gameId: string, playerName: string, emoji: string) {
     this.socket.emit('joinGame', {
-      player: { name: playerName, webRtc: {} },
+      player: { name: playerName, webRtc: {}, emoji },
       room: gameId,
     });
   }

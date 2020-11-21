@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import SimplePeer, { SignalData } from 'simple-peer';
 import _ from 'lodash';
 
 import io from 'socket.io-client';
-import { BrowserRouter as Router, Switch, Route, Redirect, useHistory } from 'react-router-dom';
-import { URL_LOBBY, URL_GAME, URL_START, URL_GAMES, URL_LOBBIES } from './url';
+import { BrowserRouter as Router, Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { URL_GAME, URL_GAMES, URL_LOBBIES, URL_LOBBY, URL_START } from './url';
 import StartPage from './pages/StartPage';
 import LobbyPage from './pages/LobbyPage';
 import GamePage from './pages/GamePage';
-import { Game, GameInfo, GameState, Round, RoundType } from './types/game';
-import { Player } from './types/player';
+import { Game, GameInfo, GameState, Round } from './types/game';
+import { Player, TEAM } from './types/player';
 import { GameSocket } from './socket/gameSocket';
 
 const ENDPOINT = 'http://127.0.0.1:3001';
@@ -141,9 +141,9 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
   useEffect(() => {
     if (socket) {
       socket.on('signal', (data: any) => {
-        console.log('SOCKET SIGNAL', data, peers);
+        // console.log('SOCKET SIGNAL', data, peers);
         if (!(data.socket_id in peers)) {
-          console.warn(`Signal for ${data.socket_id} not in peers!`);
+          // console.warn(`Signal for ${data.socket_id} not in peers!`);
         } else {
           if (!peers[data.socket_id].destroyed) {
             peers[data.socket_id].signal(data.signal);
@@ -159,7 +159,7 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
 
   useEffect(() => {
     if (localStream) {
-      console.log('Adding localStream', Object.entries(peers), localStream.getTracks());
+      // console.log('Adding localStream', Object.entries(peers), localStream.getTracks());
       for (const [key, peer] of Object.entries(peers)) {
         try {
           peer.addStream(localStream);
@@ -185,6 +185,11 @@ export const StreamContext = React.createContext({
   round: {} as Round | undefined,
   gameSocket: {} as GameSocket | undefined,
 });
+
+export const getTeamScore = (team: TEAM, game?: Game) => {
+  if (!game) return 0;
+  return game.players.filter((player) => player.team === team).reduce((sum, player) => sum + player.score, 0);
+};
 
 const App = () => {
   const history = useHistory();
@@ -222,19 +227,57 @@ const App = () => {
       <Router>
         <a href="/start">Start</a>
         <br />
-        <span>Me: {myId}</span>
-        <br />
-        <span>Mystream: {myStream?.id}</span>
-        <br />
         <hr />
-        <div>Peers</div>
+        <h3>Me</h3>
+        <div>
+          Name: {me?.name} {me?.emoji}
+        </div>
+        <div>
+          Team:{' '}
+          <span style={{ color: me?.team === TEAM.RED ? 'red' : 'blue' }}>
+            <strong>{me?.team}</strong>
+          </span>
+        </div>
+        <div>
+          ID: <strong>{me?.id}</strong>
+        </div>
+        <div>Stream: {me?.id}</div>
+        <hr />
+        <h3>Game</h3>
+        <div>
+          Game: <strong>{game?.id}</strong>
+        </div>
+        <div>
+          My score: <strong>{me?.score}</strong>
+        </div>
+        <div>
+          Round: <strong>{game?.round}</strong>
+        </div>
+        <div>
+          Time: <strong>{game?.rounds[game.round].timeLeft}</strong>
+        </div>
+        <div>
+          Active player: <strong>{game?.rounds[game.round].activePlayer.name}</strong>
+        </div>
+        <div>
+          Round type: <strong>{game?.rounds[game.round].roundType}</strong>
+        </div>
+        <div>
+          Answer: <strong>{game?.rounds[game.round].answer}</strong>
+        </div>
+        <div>
+          <span style={{ color: 'red' }}>RED: {getTeamScore(TEAM.RED, game)}</span>{' '}
+          <span style={{ color: 'blue' }}>BLUE: {getTeamScore(TEAM.BLUE, game)}</span>
+        </div>
+        <hr />
+        <h3>Peers</h3>
         <ul>
           {Object.entries(peers).map(([key, peer]) => (
             <li key={key}>{key}</li>
           ))}
         </ul>
         <hr />
-        <div>Streams</div>
+        <h3>Streams</h3>
         <ul>
           {Object.entries(streams).map(([key, stream]) => (
             <li key={stream.id}>
@@ -252,7 +295,7 @@ const App = () => {
           </Route>
 
           <Route exact path={URL_GAME}>
-            {game && me && <GamePage me={me} game={game} setStream={setMyStream} />}
+            {game && me && <GamePage />}
           </Route>
 
           <Redirect exact from={URL_GAMES} to={URL_START} />

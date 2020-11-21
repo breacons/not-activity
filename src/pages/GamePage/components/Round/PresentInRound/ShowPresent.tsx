@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, Fragment, useRef, useState } from 'react';
 import { StreamContext } from '../../../../../App';
 import WaveLength from '../WaveLength';
+import {setVideo} from "../../../../../util/set-video";
 
 interface ShowPresentProps {}
 
 const constraints = {
-  audio: true, // TODO: set to false
+  audio: false, // TODO: set to false
   video: {
     facingMode: {
       ideal: 'user',
@@ -21,7 +22,7 @@ const constraints = {
 
 export const ShowPresent = ({}: ShowPresentProps) => {
   const context = useContext(StreamContext);
-  const videoRef = useRef<any>();
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [localStream, setLocalStream] = useState<MediaStream | null>();
 
   useEffect(() => {
@@ -36,23 +37,12 @@ export const ShowPresent = ({}: ShowPresentProps) => {
   }, []);
 
   useEffect(() => {
-    if (!localStream) return;
-
-    videoRef.current.srcObject = localStream;
-    videoRef.current.playsinline = false;
-    videoRef.current.autoplay = true;
-    videoRef.current.className = 'vid';
-    videoRef.current.muted = false;
-  }, [localStream]);
+    setVideo(videoRef.current, localStream);
+  }, [localStream, videoRef]);
 
   return (
     <Fragment>
-      Stream id: {localStream?.id}
-      <p>
-        Present this: <i>{context.round?.answer}</i>
-      </p>
       <video ref={videoRef} style={{ transform: 'scaleX(-1)' }} />
-      <WaveLength stream={localStream} />
     </Fragment>
   );
 };

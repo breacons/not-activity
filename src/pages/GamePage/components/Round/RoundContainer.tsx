@@ -1,31 +1,21 @@
 import React, { useContext } from 'react';
-import { Round } from '../../../../types/game';
-import { Player } from '../../../../types/player';
 import PresentInRound from './PresentInRound/PresentInRound';
-import GuessInRound from './GuessInRound';
 import WaitInRound from './WaitInRound';
-import { useParams } from 'react-router';
 import { StreamContext } from '../../../../App';
 
-interface RoundContainerProps {
-}
+interface RoundContainerProps {}
 
 export const RoundContainer = ({}: RoundContainerProps) => {
-  const { gameId } = useParams<{ gameId: string }>();
-  const { round, me, setMyStream } = useContext(StreamContext);
+  const { round, me } = useContext(StreamContext);
 
   if (!round) {
-    return <span>Loading: round is null</span>;
+    return <span>Loading...</span>;
   }
 
   const activePlayer = round.activePlayer;
 
   if (me?.id === activePlayer.id) {
     return <PresentInRound />;
-  }
-
-  if (me?.team === activePlayer.team) {
-    return <GuessInRound />;
   }
 
   return <WaitInRound />;

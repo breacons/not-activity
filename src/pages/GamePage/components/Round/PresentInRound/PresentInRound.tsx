@@ -12,7 +12,7 @@ export const PresentInRound = ({}: PresentInRoundProps) => {
   const { round } = useContext(StreamContext);
 
   if (!round) {
-    return <div>Waiting for round</div>;
+    return <div>Loading...</div>;
   }
 
   const getPresentByType = () => {
@@ -32,7 +32,6 @@ export const PresentInRound = ({}: PresentInRoundProps) => {
   return (
     <div>
       <h1>Presenting</h1>
-      <h4>Left: {round?.timeLeft} seconds</h4>
       {getPresentByType()}
     </div>
   );

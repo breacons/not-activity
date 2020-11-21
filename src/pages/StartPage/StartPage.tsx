@@ -16,17 +16,33 @@ enum StartStep {
   GAME_INFO = 'GAME_INFO',
 }
 
+// TODO: remove these from prod
+
+function makeid(length: number) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
 export const StartPage = ({}: StartPageProps) => {
-  const [step, setStep] = useState(StartStep.USER_INFO);
-  const [playerName, setPlayerName] = useState<string>('');
+  const [step, setStep] = useState(StartStep.SELECT_GAME);
+  const [player, setPlayer] = useState({ name: makeid(8), emoji: '😅' });
   const history = useHistory();
   const context = useContext(StreamContext);
 
+  const updatePlayer = (updatedPlayer: Partial<Player>) => {
+    setPlayer({ ...player, ...updatedPlayer });
+  };
+
   const updateGame = (id?: string) => {
     if (id && context.gameSocket) {
-      context.gameSocket.joinGame(id, playerName);
+      context.gameSocket.joinGame(id, player.name, player.emoji);
     } else if (context.gameSocket) {
-      context.gameSocket.createGame(playerName, undefined);
+      context.gameSocket.createGame(player.name, undefined, player.emoji);
     }
   };
 
@@ -47,8 +63,8 @@ export const StartPage = ({}: StartPageProps) => {
           condition={step === StartStep.USER_INFO}
           then={() => (
             <Fragment>
-              <EnterUserInfo updatePlayer={setPlayerName} />{' '}
-              <button disabled={!playerName} onClick={() => setStep(StartStep.SELECT_GAME)}>
+              <EnterUserInfo updatePlayer={updatePlayer} />
+              <button disabled={!player.emoji || !player.name} onClick={() => setStep(StartStep.SELECT_GAME)}>
                 Next
               </button>
             </Fragment>
