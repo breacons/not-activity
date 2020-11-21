@@ -46,15 +46,11 @@ const constraints = {
   },
 };
 
-/////////////////////////////////////////////////////////
 
 const usePeerAndSocket = (localStream: MediaStream | null) => {
-  // console.log('usePeerAndSocket');
-  // const [socket, setSocket] = useState<Socket | null>(null);
   const [peers, setPeers] = useState<{ [key: string]: SimplePeer.Instance }>({});
   const [streams, setStreams] = useState<{ [key: string]: MediaStream }>({});
   const [game, setGame] = useState(defaultGame);
-  console.log('usePeerAndSocket', peers);
 
   const addPeer = (socket_id: string, am_initiator: boolean, socket: any) => {
     const newPeer = new SimplePeer({
@@ -79,7 +75,6 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
       setStreams({ ...streams, [socket_id]: stream });
     });
 
-    console.log('Setting peers before', peers, newPeer);
     setPeers({ ...peers, [socket_id]: newPeer });
   };
 
@@ -154,7 +149,7 @@ const generateRound = () => ({
   roundNumber: 0,
   timeLeft: Math.floor(Math.random() * 59) + 1,
   activePlayer: defaultPlayers[0],
-  roundType: RoundType.show, // TODO: enum should be uppercase
+  roundType: RoundType.draw, // TODO: enum should be uppercase
   answer: 'car',
 });
 
@@ -180,10 +175,7 @@ const App = () => {
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
 
   const { peers, streams, game } = usePeerAndSocket(myStream);
-
   const myId = socket.id;
-
-  console.log('Rerender app');
 
   return (
     <StreamContext.Provider

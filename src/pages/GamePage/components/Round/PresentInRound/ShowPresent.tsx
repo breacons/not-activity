@@ -3,13 +3,10 @@ import { Round } from '../../../../../types/game';
 import { Player } from '../../../../../types/player';
 import { StreamContext } from '../../../../../App';
 
-interface ShowPresentProps {
-  //
-  a?: null;
-}
+interface ShowPresentProps {}
 
 const constraints = {
-  audio: false,
+  audio: true, // TODO: set to false
   video: {
     facingMode: {
       ideal: 'user',
@@ -47,7 +44,7 @@ export const ShowPresent = ({}: ShowPresentProps) => {
 
   return (
     <Fragment>
-      <h1>Presenting</h1>
+
       Stream id: {localStream?.id}
       <video ref={videoRef} style={{ transform: 'scaleX(-1)' }} />
     </Fragment>

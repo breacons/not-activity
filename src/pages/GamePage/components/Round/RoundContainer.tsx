@@ -8,10 +8,6 @@ import { useParams } from 'react-router';
 import { StreamContext } from '../../../../App';
 
 interface RoundContainerProps {
-  // round: Round;
-  // me: Player;
-  // setStream: (stream: MediaStream) => void;
-  a?: null
 }
 
 export const RoundContainer = ({}: RoundContainerProps) => {

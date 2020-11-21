@@ -3,12 +3,13 @@ import { Round, RoundType } from '../../../../types/game';
 import { Player } from '../../../../types/player';
 import { StreamContext } from '../../../../App';
 
-interface WaitInRoundProps {
-  a?: null;
-}
+import WaveLength from './WaveLength';
 
+interface WaitInRoundProps {}
+
+// TODO: component: video display
 export const WaitInRound = ({}: WaitInRoundProps) => {
-  const context = useContext(StreamContext);
+  const { round, streams } = useContext(StreamContext);
   const videoRef = useRef<any>();
 
   // TODO: update with socket
@@ -22,7 +23,8 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
   };
 
   useEffect(() => {
-    const stream = getDisplayedStream(context.streams);
+    // TODO update to show currently presenting player
+    const stream = getDisplayedStream(streams);
 
     if (!stream) return;
 
@@ -31,20 +33,37 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
     videoRef.current.autoplay = true;
     videoRef.current.className = 'vid';
     videoRef.current.muted = true;
-  }, [context.streams]);
+  }, [streams]);
+
+  if (!round) {
+    return <div>Waiting for round</div>;
+  }
+
+  const getPresentByType = () => {
+    if (round.roundType === RoundType.draw) {
+      return <video ref={videoRef} />;
+    }
+
+    if (round.roundType === RoundType.show) {
+      return (
+        <Fragment>
+          <video ref={videoRef} style={{ transform: 'scaleX(-1)' }} />
+          {/*<WaveLength stream={getDisplayedStream(streams)} />*/}
+        </Fragment>
+      );
+    }
+
+    if (round.roundType === RoundType.talk) {
+      // return <WaveLength />;
+      return null;
+    }
+  };
 
   return (
     <Fragment>
       <hr />
       <h1>Watching</h1>
-      <video
-        ref={videoRef}
-        style={
-          context.round?.roundType === RoundType.show
-            ? { transform: 'scaleX(-1)' }
-            : {}
-        }
-      />
+      {getPresentByType()}
     </Fragment>
   );
 };

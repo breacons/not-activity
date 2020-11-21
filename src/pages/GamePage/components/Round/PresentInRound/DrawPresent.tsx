@@ -3,8 +3,6 @@ import { Round } from '../../../../../types/game';
 import { StreamContext } from '../../../../../App';
 
 interface DrawPresentProps {
-  round: Round;
-  setStream: (stream: MediaStream) => void;
 }
 
 // captureStream is not official yet
