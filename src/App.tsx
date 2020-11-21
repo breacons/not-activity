@@ -149,7 +149,7 @@ const generateRound = () => ({
   roundNumber: 0,
   timeLeft: Math.floor(Math.random() * 59) + 1,
   activePlayer: defaultPlayers[0],
-  roundType: RoundType.show, // TODO: enum should be uppercase
+  roundType: RoundType.draw, // TODO: enum should be uppercase
   answer: 'car',
 });
 
