@@ -4,7 +4,7 @@ import SimplePeer, { SignalData } from 'simple-peer';
 import _ from 'lodash';
 
 import io from 'socket.io-client';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Redirect, useHistory} from 'react-router-dom';
 import { URL_LOBBY, URL_GAME, URL_START, URL_GAMES, URL_LOBBIES } from './url';
 import StartPage from './pages/StartPage';
 import LobbyPage from './pages/LobbyPage';
@@ -15,6 +15,7 @@ import { GameSocket } from './socket/gameSocket';
 
 const ENDPOINT = 'http://127.0.0.1:3001';
 const socket = io(ENDPOINT);
+// const gameSocket = Gam
 
 const configuration = {
   iceServers: [
@@ -178,10 +179,12 @@ export const StreamContext = React.createContext({
 });
 
 const App = () => {
+  const history = useHistory();
   const [me, setMe] = useState<Player>();
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
 
   const { peers, streams, game, gameInfo, gameSocket } = usePeerAndSocket(myStream);
+
   const myId = socket.id;
 
   useEffect(() => {
@@ -203,6 +206,8 @@ const App = () => {
       }}
     >
       <Router>
+        <a href="/start">Start</a>
+        <br/>
         <span>Me: {myId}</span>
         <br />
         <span>Mystream: {myStream?.id}</span>
@@ -239,6 +244,7 @@ const App = () => {
           <Redirect exact from={URL_GAMES} to={URL_START} />
           <Redirect exact from={URL_LOBBIES} to={URL_START} />
           <Redirect exact to={URL_START} />
+
         </Switch>
       </Router>
     </StreamContext.Provider>

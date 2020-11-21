@@ -35,13 +35,13 @@ export class GameSocket {
   }
 
   onGameState(gameState: GameState) {
-    console.log(gameState);
+    // console.log(gameState);
     this.callbacks.onGameState(gameState);
     if (!this.interval) {
       this.interval = window.setInterval(() => {
         if (gameState?.rounds && gameState.rounds[gameState.round].activePlayer.id === this.socket.id) {
           this.socket.emit('tick');
-          console.log('Sending tick');
+          // console.log('Sending tick');
         }
       }, 1000);
     }
