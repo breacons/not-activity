@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
-import { Round } from '../../../../../types/game';
 import { StreamContext } from '../../../../../App';
 import WaveLength from '../WaveLength';
+import { setAudio } from '../../../../../util/set-video';
 
 interface TalkPresentProps {}
 
@@ -12,7 +12,7 @@ const constraints = {
 
 export const TalkPresent = ({}: TalkPresentProps) => {
   const context = useContext(StreamContext);
-  const videoRef = useRef<any>();
+  const audioRef = useRef<HTMLAudioElement>(null);
   const [localStream, setLocalStream] = useState<MediaStream | null>();
 
   useEffect(() => {
@@ -23,20 +23,12 @@ export const TalkPresent = ({}: TalkPresentProps) => {
   }, []);
 
   useEffect(() => {
-    if (!localStream) return;
-
-    videoRef.current.srcObject = localStream;
-    videoRef.current.playsinline = false;
-    videoRef.current.autoplay = true;
-    videoRef.current.className = 'vid';
-    videoRef.current.muted = false;
-  }, [localStream]);
+    setAudio(audioRef.current, localStream);
+  }, [localStream, audioRef]);
 
   return (
     <Fragment>
-      Stream id: {localStream?.id}
-      <br />
-      <audio ref={videoRef} style={{ transform: 'scaleX(-1)', display: 'none' }} />
+      <audio ref={audioRef} muted />
       <WaveLength stream={localStream} />
     </Fragment>
   );

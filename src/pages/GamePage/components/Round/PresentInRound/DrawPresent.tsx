@@ -2,8 +2,7 @@ import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { Round } from '../../../../../types/game';
 import { StreamContext } from '../../../../../App';
 
-interface DrawPresentProps {
-}
+interface DrawPresentProps {}
 
 // captureStream is not official yet
 interface CanvasElement extends HTMLCanvasElement {
@@ -28,7 +27,7 @@ export const DrawPresent = ({}: DrawPresentProps) => {
       setLocalStream(stream);
       setMyStream(stream);
 
-      ctx.fillStyle = 'green';
+      ctx.fillStyle = 'white';
       ctx.fillRect(0, 0, 300, 500);
 
       const setPosition = (x: number, y: number) => {
@@ -56,7 +55,7 @@ export const DrawPresent = ({}: DrawPresentProps) => {
 
         ctx.lineWidth = 5;
         ctx.lineCap = 'round';
-        ctx.strokeStyle = 'blue';
+        ctx.strokeStyle = 'black';
 
         ctx.moveTo(pos.x, pos.y); // from
         setPosition(e.clientX, e.clientY);
@@ -89,7 +88,7 @@ export const DrawPresent = ({}: DrawPresentProps) => {
 
         ctx.lineWidth = 5;
         ctx.lineCap = 'round';
-        ctx.strokeStyle = 'blue';
+        ctx.strokeStyle = 'black';
 
         ctx.moveTo(pos.x, pos.y); // from
         setPosition(newX, newY);
@@ -104,38 +103,16 @@ export const DrawPresent = ({}: DrawPresentProps) => {
   useEffect(() => {
     if (videoRef && videoRef.current !== null) {
       videoRef.current.srcObject = stream;
-      // videoRef.current.id = Object.keys(streams)[0];
       videoRef.current.playsinline = false;
       videoRef.current.autoplay = true;
       videoRef.current.className = 'vid';
       videoRef.current.muted = true;
     }
-
-    // try {
-    //   videoRef.current.srcObject = stream;
-    // } catch (error) {
-    //   videoRef.current.src = URL.createObjectURL(stream);
-    // }
   }, [stream, videoRef]);
 
   return (
     <Fragment>
-      <h4>
-        Draw this: <i>{round?.answer}</i>
-        <br />
-      </h4>
-      <hr />
-      Canvas stream id: {stream?.id}
-      <br />
-      <canvas
-        ref={canvas}
-        width={300}
-        height={500}
-        style={{ border: '5px red solid', position: 'fixed' }}
-      />
-      <hr />
-      Stream in video: {stream?.id}
-      <video ref={videoRef} style={{ position: 'absolute', left: '300px', zIndex: -10 }} />
+      <canvas ref={canvas} width={300} height={500} style={{ border: '5px red solid', position: 'fixed' }} />
     </Fragment>
   );
 };

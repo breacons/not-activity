@@ -1,9 +1,9 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Game } from '../../../types/game';
 import If from '../../../components/If';
 
 interface SelectGameProps {
-  updateGame: (user: Partial<Game>) => void;
+  updateGame: (gameId?: string) => void;
 }
 
 // TODO: game random string;
@@ -15,7 +15,7 @@ export const SelectGame = ({ updateGame }: SelectGameProps) => {
       condition={enteredGameId === null}
       then={() => (
         <Fragment>
-          <button onClick={() => updateGame({ id: 'RANDOM string' })}>New game</button>
+          <button onClick={() => updateGame()}>New game</button>
           <button onClick={() => setEnteredGameId('')}>Enter game</button>
         </Fragment>
       )}
@@ -23,7 +23,7 @@ export const SelectGame = ({ updateGame }: SelectGameProps) => {
         <Fragment>
           <label>Enter room number</label>
           <input onChange={(event) => setEnteredGameId(event.target.value)} />
-          <button disabled={enteredGameId === ''} onClick={() => updateGame({ id: enteredGameId as string })}>
+          <button disabled={enteredGameId === ''} onClick={() => updateGame(enteredGameId as string)}>
             Enter
           </button>
         </Fragment>

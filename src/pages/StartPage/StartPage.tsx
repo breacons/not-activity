@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Player } from '../../types/player';
 import EnterUserInfo from './components/EnterUserInfo';
 import If from '../../components/If';
 import SelectGame from './components/SelectGame';
-import { Game } from '../../types/game';
 import { useHistory } from 'react-router';
 import { getLobbyUrl } from '../../url';
+import { StreamContext } from '../../App';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface StartPageProps {}
@@ -16,26 +16,42 @@ enum StartStep {
   GAME_INFO = 'GAME_INFO',
 }
 
-export const StartPage = ({}: StartPageProps) => {
-  const [player, setPlayer] = useState<Player>({ name: '22', emoji: '22' });
-  const [game, setGame] = useState<Game>({ id: '' });
-  const [step, setStep] = useState(StartStep.SELECT_GAME);
+// TODO: remove these from prod
 
+function makeid(length: number) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+export const StartPage = ({}: StartPageProps) => {
+  const [step, setStep] = useState(StartStep.SELECT_GAME);
+  const [player, setPlayer] = useState({ name: makeid(8), emoji: '😅' });
   const history = useHistory();
+  const context = useContext(StreamContext);
 
   const updatePlayer = (updatedPlayer: Partial<Player>) => {
     setPlayer({ ...player, ...updatedPlayer });
   };
 
-  const updateGame = (updatedGame: Partial<Game>) => {
-    setGame({ ...game, ...updatedGame });
+  const updateGame = (id?: string) => {
+    if (id && context.gameSocket) {
+      context.gameSocket.joinGame(id, player.name, player.emoji);
+    } else if (context.gameSocket) {
+      context.gameSocket.createGame(player.name, undefined, player.emoji);
+    }
   };
 
   useEffect(() => {
-    if (game.id) {
-      history.push(getLobbyUrl(game.id));
+    if (context.gameInfo?.id) {
+      navigator.clipboard.writeText(context.gameInfo.id);
+      history.push(getLobbyUrl(context.gameInfo.id));
     }
-  }, [game]);
+  }, [context.gameInfo]);
 
   return (
     <Fragment>
@@ -47,8 +63,8 @@ export const StartPage = ({}: StartPageProps) => {
           condition={step === StartStep.USER_INFO}
           then={() => (
             <Fragment>
-              <EnterUserInfo updatePlayer={updatePlayer} />{' '}
-              <button disabled={!player.name || !player.emoji} onClick={() => setStep(StartStep.SELECT_GAME)}>
+              <EnterUserInfo updatePlayer={updatePlayer} />
+              <button disabled={!player.emoji || !player.name} onClick={() => setStep(StartStep.SELECT_GAME)}>
                 Next
               </button>
             </Fragment>

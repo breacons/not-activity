@@ -2,12 +2,12 @@ import React, { Fragment } from 'react';
 import { Player } from '../../../types/player';
 
 interface EnterPlayerInfoProps {
-  updatePlayer: (player: Partial<Player>) => void;
+  updatePlayer: (updatedPlayer: Partial<Player>) => void;
 }
 export const EnterPlayerInfo = ({ updatePlayer }: EnterPlayerInfoProps) => {
   return (
     <Fragment>
-      <label>What's your name?</label>
+      <label>What is your name?</label>
       <input onChange={(event) => updatePlayer({ name: event.target.value })} id="name" />
       <br />
       <label>What's your favourite emoji?</label>

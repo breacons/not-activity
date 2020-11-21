@@ -1,28 +1,18 @@
-import React, { Fragment } from 'react';
-// import { useParams } from 'react-router';
-import { Player } from '../../types/player';
-import { Game } from '../../types/game';
+import React, { Fragment, useContext } from 'react';
 import RoundContainer from './components/Round/RoundContainer';
+import { StreamContext } from '../../App';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface GamePageProps {
-  me: Player;
-  game: Game;
-  setStream: (stream: MediaStream) => void;
-}
+interface GamePageProps {}
 
-export const GamePage = ({ me, game, setStream }: GamePageProps) => {
-  // const { gameId } = useParams<{ gameId: string }>();
+export const GamePage = ({}: GamePageProps) => {
+  const { game } = useContext(StreamContext);
 
   if (!game || !game.rounds || game.round === null || game.round === undefined) {
     return <span>Loading</span>;
   }
 
-  const round = game.rounds[game.round];
-
   return (
     <Fragment>
-      <h5>Welcome to the game {game.id}</h5>
       <RoundContainer />
     </Fragment>
   );
