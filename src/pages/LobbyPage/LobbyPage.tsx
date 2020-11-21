@@ -24,6 +24,7 @@ export const LobbyPage = ({}: LobbyPageProps) => {
       {gameInfo && (
         <Fragment>
           <h2>Game: {gameInfo.id}</h2>
+          <button onClick={() => navigator.clipboard.writeText(gameInfo.id)}>Copy</button>
           {gameInfo.players.map((player) => (
             <PlayerCard player={player} key={player.id} />
           ))}

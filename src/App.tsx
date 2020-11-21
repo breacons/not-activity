@@ -4,7 +4,7 @@ import SimplePeer, { SignalData } from 'simple-peer';
 import _ from 'lodash';
 
 import io from 'socket.io-client';
-import {BrowserRouter as Router, Switch, Route, Redirect, useHistory} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import { URL_LOBBY, URL_GAME, URL_START, URL_GAMES, URL_LOBBIES } from './url';
 import StartPage from './pages/StartPage';
 import LobbyPage from './pages/LobbyPage';
@@ -54,6 +54,8 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
   const [gameInfo, setGameInfo] = useState<GameInfo>();
   const [gameSocket, setGameSocket] = useState<GameSocket>();
 
+  // console.log('Peers', peers)
+
   const addPeer = (socket_id: string, am_initiator: boolean, socket: any) => {
     const newPeer = new SimplePeer({
       initiator: am_initiator,
@@ -87,8 +89,6 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
   };
 
   useEffect(() => {
-    console.log('useEffect');
-
     socket.on('initReceive', (socket_id: string) => {
       console.log('INIT RECEIVE ' + socket_id);
       addPeer(socket_id, false, socket);
@@ -141,7 +141,7 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
   useEffect(() => {
     if (socket) {
       socket.on('signal', (data: any) => {
-        // console.log('SOCKET SIGNAL', data, peers);
+        console.log('SOCKET SIGNAL', data, peers);
         if (!(data.socket_id in peers)) {
           console.warn(`Signal for ${data.socket_id} not in peers!`);
         } else {
@@ -151,14 +151,22 @@ const usePeerAndSocket = (localStream: MediaStream | null) => {
         }
       });
     }
+
+    return () => {
+      socket.off('signal');
+    };
   }, [peers, socket]);
 
   useEffect(() => {
     if (localStream) {
-      console.log('Adding localStream', localStream);
+      console.log('Adding localStream', Object.entries(peers), localStream.getTracks());
       for (const [key, peer] of Object.entries(peers)) {
-        console.log(`Adding stream to peer ${key} ${peer}`);
-        peer.addStream(localStream);
+        try {
+          peer.addStream(localStream);
+          console.log(`Added stream to peer ${key}`, peer);
+        } catch (e) {
+          console.error(`Error while adding stream to peer ${key}`, e);
+        }
       }
     }
   }, [localStream]);
@@ -190,7 +198,6 @@ const App = () => {
   useEffect(() => {
     if (gameInfo) {
       setMe(gameInfo.players.find((p) => p.id === myId));
-      navigator.clipboard.writeText(gameInfo.id);
     }
   }, [gameInfo]);
 
@@ -208,7 +215,7 @@ const App = () => {
     >
       <Router>
         <a href="/start">Start</a>
-        <br/>
+        <br />
         <span>Me: {myId}</span>
         <br />
         <span>Mystream: {myStream?.id}</span>
@@ -245,7 +252,6 @@ const App = () => {
           <Redirect exact from={URL_GAMES} to={URL_START} />
           <Redirect exact from={URL_LOBBIES} to={URL_START} />
           <Redirect exact to={URL_START} />
-
         </Switch>
       </Router>
     </StreamContext.Provider>

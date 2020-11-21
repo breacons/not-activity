@@ -17,9 +17,13 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
     if (Object.keys(streams).length === 0) {
       return null;
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return Object.entries(streams)[0][1];
+
+    if (!round?.activePlayer.id) {
+      return null;
+    }
+
+    const activePlayer = round?.activePlayer.id;
+    return streams[activePlayer];
   };
 
   // useEffect(() => {
@@ -65,7 +69,7 @@ export const WaitInRound = ({}: WaitInRoundProps) => {
 
   const getPresentByType = () => {
     if (round.roundType === RoundType.draw) {
-      return  <video ref={videoRef} style={{ position: 'absolute', left: '0px', zIndex: 10 }} />
+      return <video ref={videoRef} style={{ position: 'absolute', left: '0px', zIndex: 10 }} />;
     }
 
     if (round.roundType === RoundType.show) {
