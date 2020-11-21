@@ -201,6 +201,12 @@ const App = () => {
     }
   }, [gameInfo]);
 
+  useEffect(() => {
+    if (game) {
+      setMe(game.players.find((p) => p.id === myId));
+    }
+  }, [game]);
+
   return (
     <StreamContext.Provider
       value={{

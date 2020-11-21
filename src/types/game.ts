@@ -20,7 +20,7 @@ export type Game = {
   id: string;
   round?: number;
   rounds?: Round[];
-  players?: Player[];
+  players: Player[];
 };
 
 export type GameInfo = {

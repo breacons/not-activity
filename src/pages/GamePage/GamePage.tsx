@@ -23,6 +23,8 @@ export const GamePage = ({ me, game, setStream }: GamePageProps) => {
   return (
     <Fragment>
       <h5>Welcome to the game {game.id}</h5>
+      <p>Your team is: {me?.team}</p>
+      <p>Your score is: {me?.score}</p>
       <RoundContainer />
     </Fragment>
   );
