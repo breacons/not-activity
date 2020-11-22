@@ -46,7 +46,7 @@ export class GameSocket {
       this.interval = window.setInterval(() => {
         if (gameState?.rounds && gameState.rounds[gameState.round].activePlayer.id === this.socket.id) {
           this.socket.emit('tick');
-          // console.log('Sending tick');
+          console.log('Sending tick');
         }
       }, 1000);
     }

@@ -60,6 +60,10 @@ export const WaitInRound = () => {
     }
   }, [streams, audioRef]);
 
+  useEffect(() => {
+    setSolution('');
+  }, [round?.roundNumber]);
+
   if (!round) {
     return <div>Waiting for round</div>;
   }
