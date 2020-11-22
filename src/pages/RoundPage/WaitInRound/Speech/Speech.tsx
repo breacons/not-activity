@@ -46,9 +46,11 @@ export const Speech = (props: SpeechProps) => {
   }, []);
 
   const onStart = () => {
-    if (recognition) {
+    if (recognition && !isRecording) {
       setIsRecording(true);
       recognition.start();
+    } else if (recognition) {
+      setIsRecording(false);
     }
   };
 
@@ -56,7 +58,11 @@ export const Speech = (props: SpeechProps) => {
     return null;
   }
 
-  return <span onClick={onStart} className={styles.mic}>{isRecording ? `👂` : `🎙`}</span>;
+  return (
+    <span onClick={onStart} className={styles.mic}>
+      {isRecording ? `👂` : `🎙`}
+    </span>
+  );
 };
 
 export default Speech;
