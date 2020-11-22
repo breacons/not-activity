@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import StartPage from './pages/StartPage';
 import LobbyPage from './pages/LobbyPage';
@@ -144,7 +144,7 @@ const App = () => {
         solutions,
       }}
     >
-      <HashRouter>
+      <Router basename={process.env.PUBLIC_URL.split('/').pop()}>
         <Switch>
           <Route exact path={URL_START}>
             <StartPage />
@@ -170,7 +170,7 @@ const App = () => {
           <Redirect exact from={URL_LOBBIES} to={URL_START} />
           <Redirect exact to={URL_START} />
         </Switch>
-      </HashRouter>
+      </Router>
       <If
         condition={showServiceWorkerUpdate}
         then={() => (
