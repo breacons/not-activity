@@ -33,4 +33,10 @@ export type Leaderboard = {
   playerLeaderboard: Player[];
 };
 
+export type Solution = {
+  answer: string;
+  sender: string;
+  isCorrect: boolean;
+};
+
 export type GameState = Game & { rounds: Round[]; round: number; isOver: boolean; leaderboard: Leaderboard };

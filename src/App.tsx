@@ -5,7 +5,7 @@ import StartPage from './pages/StartPage';
 import LobbyPage from './pages/LobbyPage';
 import RoundContainer from './pages/RoundPage';
 
-import { GameInfo, GameState, Round } from './types/game';
+import { GameInfo, GameState, Round, Solution } from './types/game';
 import { Player, Team } from './types/player';
 
 import { GameSocket } from './socket/gameSocket';
@@ -29,6 +29,7 @@ export const StreamContext = React.createContext({
   },
   round: {} as Round | undefined,
   gameSocket: {} as GameSocket | undefined,
+  solutions: [] as Solution[],
 });
 
 const Debug = ({ me, game, myStream, peers, streams }: any) => {
@@ -106,7 +107,7 @@ const App = () => {
   const [showServiceWorkerUpdate, setShowServiceWorkerUpdate] = useState<boolean>(false);
   const [showServiceWorkerInstalled, setShowServiceWorkerInstalled] = useState<boolean>(false);
 
-  const { peers, streams, game, gameInfo, gameSocket, myId } = usePeerAndSocket(myStream);
+  const { peers, streams, game, gameInfo, gameSocket, myId, solutions } = usePeerAndSocket(myStream);
 
   useEffect(() => {
     serviceWorkerRegistration.register({
@@ -142,6 +143,7 @@ const App = () => {
         setMyStream: setMyStream,
         round: game?.rounds[game.round],
         gameSocket: gameSocket,
+        solutions,
       }}
     >
       <HashRouter>

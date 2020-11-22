@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
-import { RoundType } from '../../../types/game';
+import { Round, RoundType } from '../../../types/game';
 import { StreamContext } from '../../../App';
 
 import WaveLength from '../WaveLength/WaveLength';
@@ -29,11 +29,10 @@ export const fullScreenVideoStyle = {
 } as React.CSSProperties;
 
 export const WaitInRound = () => {
-  const { round, streams, gameSocket, me } = useContext(StreamContext);
+  const { round, streams, gameSocket, me, game, solutions } = useContext(StreamContext);
   const [solution, setSolution] = useState<string>('');
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-
   const getDisplayedStream = (streams: { [key: string]: MediaStream }): MediaStream | null => {
     if (Object.keys(streams).length === 0) {
       return null;
