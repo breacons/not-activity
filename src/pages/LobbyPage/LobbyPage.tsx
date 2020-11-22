@@ -5,7 +5,7 @@ import { getGameUrl } from '../../url';
 import If from '../../components/If';
 import { StreamContext } from '../../App';
 import './LobbyPage.css';
-import { TEAM } from '../../types/player';
+import { Team } from '../../types/player';
 
 export const LobbyPage = ({}) => {
   const history = useHistory();
@@ -46,7 +46,7 @@ export const LobbyPage = ({}) => {
                 <span className="blue">Blue</span> Team
               </h3>
               {gameInfo.players
-                .filter((p) => p.team === TEAM.BLUE)
+                .filter((p) => p.team === Team.BLUE)
                 .map((player) => (
                   <PlayerCard player={player} key={player.id} />
                 ))}
@@ -57,7 +57,7 @@ export const LobbyPage = ({}) => {
               </h3>
 
               {gameInfo.players
-                .filter((p) => p.team === TEAM.RED)
+                .filter((p) => p.team === Team.RED)
                 .map((player) => (
                   <PlayerCard player={player} key={player.id} />
                 ))}

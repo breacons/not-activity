@@ -1,5 +1,5 @@
 import React from 'react';
-import { Player, TEAM } from '../../../types/player';
+import { Player } from '../../../types/player';
 
 export interface PlayerCardProps {
   player: Player;
