@@ -21,7 +21,7 @@ import reportWebVitals from './reportWebVitals';
 
 export const StreamContext = React.createContext({
   game: {} as GameState | undefined,
-  gameInfo: {} as GameInfo | undefined,
+  gameInfo: {} as GameState | undefined,
   me: {} as Player | undefined,
   streams: {},
   setMyStream: (_: MediaStream) => {

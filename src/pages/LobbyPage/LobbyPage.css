@@ -66,5 +66,13 @@
 }
 
 .labelEmoji {
-    margin-right: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.score {
+  background: gray;
+  color: black;
+  border-radius: 6px;
+  display: inline-block;
+  padding: 3px 6px;
 }

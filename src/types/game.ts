@@ -28,4 +28,9 @@ export type GameInfo = {
   players: Player[];
 };
 
-export type GameState = Game & { rounds: Round[]; round: number };
+export type Leaderboard = {
+  teamScores: { [color: string]: number };
+  playerLeaderboard: Player[];
+};
+
+export type GameState = Game & { rounds: Round[]; round: number; isOver: boolean; leaderboard: Leaderboard };

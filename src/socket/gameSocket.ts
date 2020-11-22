@@ -4,9 +4,9 @@ export class GameSocket {
   interval: number | undefined = undefined;
   constructor(
     private socket: SocketIOClient.Socket,
-    private callbacks: { onGameInfo: (info: GameInfo) => void; onGameState: (gameState: GameState) => void },
+    private callbacks: { onGameInfo: (info: GameState) => void; onGameState: (gameState: GameState) => void },
   ) {
-    socket.on('gameInfo', (payload: GameInfo) => this.onGameInfo(payload));
+    socket.on('gameInfo', (payload: GameState) => this.onGameInfo(payload));
     socket.on('gameState', (payload: GameState) => this.onGameState(payload));
   }
 
@@ -29,7 +29,7 @@ export class GameSocket {
     this.socket.emit('solution', { solution });
   }
 
-  onGameInfo(gameInfo: GameInfo) {
+  onGameInfo(gameInfo: GameState) {
     console.log(gameInfo);
     this.callbacks.onGameInfo(gameInfo);
   }

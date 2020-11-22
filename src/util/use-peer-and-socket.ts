@@ -32,7 +32,7 @@ export const usePeerAndSocket = (localStream: MediaStream | null) => {
   const [peers, setPeers] = useState<{ [key: string]: SimplePeer.Instance }>({});
   const [streams, setStreams] = useState<{ [key: string]: MediaStream }>({});
   const [game, setGame] = useState<GameState>();
-  const [gameInfo, setGameInfo] = useState<GameInfo>();
+  const [gameInfo, setGameInfo] = useState<GameState>();
   const [gameSocket, setGameSocket] = useState<GameSocket>();
 
   const addPeer = (socketId: string, isInitiator: boolean, socket: SocketIOClient.Socket) => {

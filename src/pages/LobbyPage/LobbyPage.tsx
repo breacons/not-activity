@@ -6,17 +6,17 @@ import If from '../../components/If';
 import { StreamContext } from '../../App';
 import './LobbyPage.css';
 import { Team } from '../../types/player';
+import { LeaderboardComponent } from './components/Leaderboard';
 
 export const LobbyPage = ({}) => {
   const history = useHistory();
-  const context = useContext(StreamContext);
-  const gameInfo = context.gameInfo;
+  const { gameInfo, game, gameSocket } = useContext(StreamContext);
 
   useEffect(() => {
-    if (context.game) {
-      history.push(getGameUrl(context.game.id));
+    if (game) {
+      history.push(getGameUrl(game.id));
     }
-  }, [context.game]);
+  }, [game]);
 
   return (
     <>
@@ -40,29 +40,7 @@ export const LobbyPage = ({}) => {
               Share
             </button>
           </div>
-          <div className="players">
-            <div className="playersColumn">
-              <h3 className="teamTitle">
-                <span className="blue">Blue</span> Team
-              </h3>
-              {gameInfo.players
-                .filter((p) => p.team === Team.BLUE)
-                .map((player) => (
-                  <PlayerCard player={player} key={player.id} />
-                ))}
-            </div>
-            <div className="playersColumn">
-              <h3 className="teamTitle">
-                <span className="red">Red</span> Team
-              </h3>
-
-              {gameInfo.players
-                .filter((p) => p.team === Team.RED)
-                .map((player) => (
-                  <PlayerCard player={player} key={player.id} />
-                ))}
-            </div>
-          </div>
+          {gameInfo && <LeaderboardComponent leaderboard={gameInfo.leaderboard} />}
 
           <If
             condition={gameInfo.players.length < 2}
@@ -71,8 +49,8 @@ export const LobbyPage = ({}) => {
               <button
                 className="nextButton"
                 onClick={() => {
-                  if (context.gameSocket) {
-                    context.gameSocket.startGame();
+                  if (gameSocket) {
+                    gameSocket.startGame();
                   }
                 }}
               >
