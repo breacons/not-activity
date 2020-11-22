@@ -56,3 +56,20 @@ code {
   width: 100%;
   text-align: center;
 }
+
+.notification {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  height: 100px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: #e2e2e2 0px 0px 10px 0px;
+  padding: 0 10px;
+  text-align: center;
+  background: cadetblue;
+  color: white;
+}
