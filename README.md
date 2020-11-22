@@ -5,12 +5,24 @@ This is a `React` frontend for our awesome Activity game. To run it, please `npm
 REACT_APP_ENDPOINT=127.0.0.1:8080
 ```
 
-The backend is available in [this](https://github.com/breacons/not-activity-backend) repository.
+The backend is available in [this](https://github.com/breacons/not-activity-backend) repository. You need a running local backend to play this game locally. If you wish to play with the deployed version, you can do so [here](https://storage.googleapis.com/hacktivity-296321.appspot.com/start).
 
 ## Deployment
 Make sure your `gcloud` CLI is logged in and you have selected the project. Run `./deploy.sh` to deploy the app to Cloud Storage.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Gameplay
+
+> Important! We have tested this game on Chrome on desktop browsers and Android phones. This is will give you the best experience.
+
+In order to play the game, you need to: 
+* Input your name and create a new Game
+* Ask your friends to join the same Game room (or join with 3 other browser tabs for testing)
+* Once all 4 of you are present in the Lobby, click Start Game
+* Teams will take turns either drawing, presenting or describing a topic. The game engine will automatically switch rounds after 30 seconds. Your team members have 15 seconds to guess, after that the other team can also guess and earn points. 
+* You can guess the answer by typing in the answer field or using the microphone button. 
+* The game has 5 rounds and the team with the most points wins! Enjoy!
 
 ## Available Scripts
 
