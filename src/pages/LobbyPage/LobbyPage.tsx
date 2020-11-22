@@ -26,9 +26,9 @@ export const LobbyPage = ({}) => {
         <div className={styles.container}>
           <div className={styles.header}>
             <h1>
-              Welcome {me?.name} to the Glorious{' '}
+              Welcome {me?.name} to the Glorious Team{' '}
               <span style={{ color: me?.team === Team.RED ? '#F66689' : '#5E6EC4' }}>
-                {me?.team === Team.RED ? 'Red' : 'Blue'} Team
+                {me?.team === Team.RED ? 'Red' : 'Blue'}
               </span>
               !
             </h1>
