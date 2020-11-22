@@ -9,7 +9,7 @@ export const PresentInRound = () => {
   const { round } = useContext(StreamContext);
 
   if (!round) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   if (round.roundType === RoundType.draw) {

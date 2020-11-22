@@ -45,7 +45,7 @@ export const RoundContainer = () => {
   }, [solutions]);
 
   if (!round) {
-    return <span>Loading...</span>;
+    return <span></span>;
   }
 
   const activePlayer = round.activePlayer;

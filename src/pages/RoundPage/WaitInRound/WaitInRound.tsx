@@ -65,7 +65,7 @@ export const WaitInRound = () => {
   }, [round?.roundNumber]);
 
   if (!round) {
-    return <div>Waiting for round</div>;
+    return <div></div>;
   }
 
   const getPresentByType = () => {

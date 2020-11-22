@@ -44,7 +44,7 @@ export const ShowPresent = () => {
       <If
         condition={localStream}
         then={() => <video ref={videoRef} style={fullScreenVideoStyle} />}
-        else={() => <span>Loading camera...</span>}
+        else={() => <span></span>}
       />
     </Fragment>
   );
