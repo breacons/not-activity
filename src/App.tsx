@@ -16,6 +16,8 @@ import { getTeamScore } from './util/get-team-score';
 
 import { URL_GAME, URL_GAMES, URL_LOBBIES, URL_LOBBY, URL_START } from './url';
 import './App.css';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import reportWebVitals from './reportWebVitals';
 
 export const StreamContext = React.createContext({
   game: {} as GameState | undefined,
@@ -101,8 +103,22 @@ const StatusOverLay = {};
 const App = () => {
   const [me, setMe] = useState<Player>();
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
+  const [showServiceWorkerUpdate, setShowServiceWorkerUpdate] = useState<boolean>(false);
+  const [showServiceWorkerInstalled, setShowServiceWorkerInstalled] = useState<boolean>(false);
 
   const { peers, streams, game, gameInfo, gameSocket, myId } = usePeerAndSocket(myStream);
+
+  useEffect(() => {
+    serviceWorkerRegistration.register({
+      onSuccess: () => {
+        setShowServiceWorkerInstalled(true);
+      },
+      onUpdate: () => {
+        setShowServiceWorkerUpdate(true);
+      },
+    });
+    reportWebVitals();
+  }, []);
 
   useEffect(() => {
     if (gameInfo) {
@@ -155,6 +171,22 @@ const App = () => {
           <Redirect exact to={URL_START} />
         </Switch>
       </HashRouter>
+      <If
+        condition={showServiceWorkerUpdate}
+        then={() => (
+          <div className="notification" onClick={() => setShowServiceWorkerUpdate(false)}>
+            We have an update! Please close this tab and open it again to see new features! ♻️
+          </div>
+        )}
+      />
+      <If
+        condition={showServiceWorkerInstalled}
+        then={() => (
+          <div className="notification" onClick={() => setShowServiceWorkerInstalled(false)}>
+            Woohoo! The app has been installed offline and will run super fast! 🚀
+          </div>
+        )}
+      />
     </StreamContext.Provider>
   );
 };
