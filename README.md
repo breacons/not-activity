@@ -24,6 +24,56 @@ In order to play the game, you need to:
 * You can guess the answer by typing in the answer field or using the microphone button. 
 * The game has 5 rounds and the team with the most points wins! Enjoy!
 
+## Implementation
+
+Activity is not an easy game to implement online. It requires multiple types of games: drawing, presenting and describing. Lucky for us, we drew 3 APIs that fit very well for this purpose: 
+* WebRTC API
+* Canvas API
+* WebWorker API
+
+## Technology deep dive
+
+Let’s take a closer look at the technologies we used this weekend (3 + 7 APIs):
+* WebSocket API
+
+Our game server communicates with players via sockets. This allows for a real-time game with good performance. Our backend was implemented in Node.js and it’s hosted on App Engine.
+
+* WebRTC API
+
+The players initiate connections with each other via the WebSocket and then directly engage in peer-to-peer video chat via WebRTC. The chat is high-quality and does not require expensive infrastructure to maintain.
+
+* Canvas API
+
+We implemented a drawing layer and interacted directly with the Canvas API. The drawing is streamed live via WebRTC to other players.
+
+* WebWorker API
+
+Thanks to the workers, the game behaves like a native app on smartphones. A common annoyance with Web Workers is how they cache your page and serve an older version. Worry not, you’ll get a notification if a new version of the game is available!
+
+* Clipboard API
+
+We spent a lot of time selecting and copy-pasting game rooms during development. To make our lives easier, we added a “Copy” button that puts the ID on the clipboard!
+
+* Navigator.share()
+
+Activity is meant to be played with friends, so if you open the game on your phone, you’ll be able to share a direct link to your game so your friends can join instantly.
+
+* ReadableStream
+
+The game requires streams in multiple places: audio from your microphone, video from your webcam, and Canvas data. The Readable Stream helps us deliver this data via WebRTC.
+
+* Web Animations
+
+Although not a huge part of the gameplay, when you correctly answer a question, the game rewards you with a handful of confetti thrown on the screen. It looks and feels awesome!
+
+* Web Audio API
+
+When someone is in the ‘describe’ stage, you don’t see their faces on the game. It would be quite boring to just hear them speak, so we implemented a little visualization that shows how their audio stream’s volume is changing.
+
+* Web Speech API
+
+There is very limited space on a smartphone and if you have to type in your guess in Activity, you’ll lose half of the screen. Therefore, if you click on the little microphone, you’ll be able to dictate your guess. If it matches, you win the round!
+
 ## Available Scripts
 
 In the project directory, you can run:
