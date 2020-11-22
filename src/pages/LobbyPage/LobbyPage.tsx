@@ -55,9 +55,9 @@ export const LobbyPage = ({}) => {
                 onClick={() => {
                   if (typeof window.navigator.share === 'function') {
                     navigator.share({
-                      url: `${window.location.origin}/${window.location.pathname.split('/')[0]}/start?gameId=${
-                        gameInfo.id
-                      }`,
+                      url: `${window.location.origin}/${
+                        window.location.pathname.split('/')[1]
+                      }/index.html/start?gameId=${gameInfo.id}`,
                       text: 'Play Activity with me online!',
                     });
                   } else {
