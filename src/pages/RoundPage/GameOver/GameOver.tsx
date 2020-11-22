@@ -27,7 +27,7 @@ export const GameOver = () => {
             <If
               condition={iAmWinner}
               then={() => `Nice! You and Team ${me?.team === Team.RED ? 'Red' : 'Blue'} won! 🏆`}
-              else={() => `Oh snap, Team ${me?.team !== Team.RED ? 'Red' : 'Blue'} won 😕. How about a rematch?`}
+              else={() => `Oh snap, Team ${me?.team !== Team.RED ? 'Blue' : 'Red'} won 😕. How about a rematch?`}
             />
           </h1>
           <hr className={styles.divider} />
