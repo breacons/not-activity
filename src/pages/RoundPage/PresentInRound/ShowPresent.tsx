@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, Fragment, useRef, useState } from 'react';
 import { StreamContext } from '../../../App';
 import { setVideo } from '../../../util/set-video';
+import {fullScreenVideoStyle} from "../WaitInRound";
 
 
 const constraints = {
@@ -40,7 +41,7 @@ export const ShowPresent = () => {
 
   return (
     <Fragment>
-      <video ref={videoRef} style={{ transform: 'scaleX(-1)' }} />
+      <video ref={videoRef} style={fullScreenVideoStyle} />
     </Fragment>
   );
 };

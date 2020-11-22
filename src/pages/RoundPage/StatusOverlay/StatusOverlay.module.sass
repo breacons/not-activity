@@ -1,0 +1,66 @@
+.container
+  width: 100%
+  height: 100vh
+  pointer-events: none
+  z-index: 99
+  position: absolute
+  top: 0
+  left: 0
+
+.leftBar, .rightBar
+  position: absolute
+  bottom: 0
+  width: 15px
+  transition: all 250ms ease-in-out
+
+.leftBar
+  background-color: #F66689
+  left: 0
+  border-top-right-radius: 10px
+
+.rightBar
+  background-color: #5E6EC4
+  right: 0
+  border-top-left-radius: 10px
+
+.timer
+  width: 200px
+  height: 15px
+  line-height: 50px
+  text-align: center
+  margin: 30px auto
+  top: 50px
+  background-color: white
+  border-radius: 30px
+  box-shadow: #e2e2e2 0px 0px 10px 0px
+  overflow: hidden
+  opacity: 0.9
+
+.timerProgress
+  background-color: #5E6EC4
+  width: 50%
+  transition: all 500ms
+  height: 15px
+
+//.timerLabel
+//  color: black
+//  position: absolute
+//  left: 50%
+//  transform: translate(-50%, 0)
+
+.task
+  background-color: rgba(255, 255, 255, 0.9)
+  color: #222
+  min-width: 200px
+  padding: 0 15px
+  height: 50px
+  line-height: 50px
+  text-align: center
+  bottom: 15px
+  position: fixed
+  left: 50%
+  transform: translate(-50%, -50%)
+  margin: 0 auto
+  border-radius: 30px
+  box-shadow: #e2e2e2 0px 0px 10px 0px
+

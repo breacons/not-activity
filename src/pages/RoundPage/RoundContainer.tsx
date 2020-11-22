@@ -1,7 +1,11 @@
-import React, { useContext } from 'react';
-import PresentInRound from './PresentInRound/PresentInRound';
-import WaitInRound from './WaitInRound/WaitInRound';
+import React, { useContext, Fragment } from 'react';
 import { StreamContext } from '../../App';
+import PresentInRound from './PresentInRound';
+import WaitInRound from './WaitInRound';
+import StatusOverlay from './StatusOverlay';
+
+import If from '../../components/If';
+
 
 export const RoundContainer = () => {
   const { round, me } = useContext(StreamContext);
@@ -12,11 +16,12 @@ export const RoundContainer = () => {
 
   const activePlayer = round.activePlayer;
 
-  if (me?.id === activePlayer.id) {
-    return <PresentInRound />;
-  }
-
-  return <WaitInRound />;
+  return (
+    <Fragment>
+      <StatusOverlay />
+      <If condition={me?.id === activePlayer.id} then={() => <PresentInRound />} else={() => <WaitInRound />} />
+    </Fragment>
+  );
 };
 
 export default RoundContainer;

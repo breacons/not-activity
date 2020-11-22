@@ -24,7 +24,7 @@ function makeid(length: number) {
 }
 
 export const StartPage = () => {
-  const [step, setStep] = useState(StartStep.USER_INFO);
+  const [step, setStep] = useState(StartStep.SELECT_GAME);
   const [player, setPlayer] = useState({ name: makeid(8), emoji: '😅' });
   const history = useHistory();
   const context = useContext(StreamContext);
@@ -58,7 +58,7 @@ export const StartPage = () => {
           condition={step === StartStep.USER_INFO}
           then={() => (
             <Fragment>
-              <EnterUserInfo updatePlayer={updatePlayer} />
+              <EnterUserInfo updatePlayer={updatePlayer} player={player} />
               <button disabled={!player.emoji || !player.name} onClick={() => setStep(StartStep.SELECT_GAME)}>
                 Next
               </button>

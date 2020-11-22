@@ -12,26 +12,15 @@ export const PresentInRound = () => {
     return <div>Loading...</div>;
   }
 
-  const getPresentByType = () => {
-    if (round.roundType === RoundType.draw) {
-      return <DrawPresent />;
-    }
+  if (round.roundType === RoundType.draw) {
+    return <DrawPresent />;
+  }
 
-    if (round.roundType === RoundType.show) {
-      return <ShowPresent />;
-    }
+  if (round.roundType === RoundType.show) {
+    return <ShowPresent />;
+  }
 
-    if (round.roundType === RoundType.talk) {
-      return <TalkPresent />;
-    }
-  };
-
-  return (
-    <div>
-      <h1>Presenting</h1>
-      {getPresentByType()}
-    </div>
-  );
+  return <TalkPresent />;
 };
 
 export default PresentInRound;

@@ -4,10 +4,11 @@ import { getRandomEmoji } from '../../../util/random-emoji';
 import EmojiCard from './EmojiCard/EmojiCard';
 
 interface EnterPlayerInfoProps {
+  player: Partial<Player>;
   updatePlayer: (updatedPlayer: Partial<Player>) => void;
 }
 
-export const EnterPlayerInfo = ({ updatePlayer }: EnterPlayerInfoProps) => {
+export const EnterPlayerInfo = ({ updatePlayer, player }: EnterPlayerInfoProps) => {
   const [emojis, setEmojis] = useState<string[]>([]);
 
   useEffect(() => {
@@ -19,9 +20,14 @@ export const EnterPlayerInfo = ({ updatePlayer }: EnterPlayerInfoProps) => {
       <label>What is your name?</label>
       <input onChange={(event) => updatePlayer({ name: event.target.value })} id="name" />
       <br />
-      <label>What&apos; spirit emoji?</label>
+      <label>What&apos; your spirit emoji?</label>
       {emojis.map((emoji) => (
-        <EmojiCard emoji={emoji} onClick={(emoji) => updatePlayer({ emoji })} />
+        <EmojiCard
+          selectedEmoji={player.emoji as string}
+          emoji={emoji}
+          onClick={(emoji) => updatePlayer({ emoji })}
+          key={emoji}
+        />
       ))}
       <input onChange={(event) => updatePlayer({ emoji: event.target.value })} id="emoji" />
     </Fragment>

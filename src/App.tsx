@@ -6,7 +6,7 @@ import LobbyPage from './pages/LobbyPage';
 import RoundContainer from './pages/RoundPage';
 
 import { GameInfo, GameState, Round } from './types/game';
-import { Player, TEAM } from './types/player';
+import { Player, Team } from './types/player';
 
 import { GameSocket } from './socket/gameSocket';
 import If from './components/If';
@@ -29,9 +29,9 @@ export const StreamContext = React.createContext({
   gameSocket: {} as GameSocket | undefined,
 });
 
-const Status = ({ me, game, myStream, peers, streams }: any) => {
+const Debug = ({ me, game, myStream, peers, streams }: any) => {
   return (
-    <div>
+    <div style={{ position: 'absolute' }}>
       <a href="/start">Start</a>
       <br />
       <hr />
@@ -41,7 +41,7 @@ const Status = ({ me, game, myStream, peers, streams }: any) => {
       </div>
       <div>
         Team:{' '}
-        <span style={{ color: me?.team === TEAM.RED ? 'red' : 'blue' }}>
+        <span style={{ color: me?.team === Team.RED ? 'red' : 'blue' }}>
           <strong>{me?.team}</strong>
         </span>
       </div>
@@ -73,8 +73,8 @@ const Status = ({ me, game, myStream, peers, streams }: any) => {
         Answer: <strong>{game?.rounds[game.round].answer}</strong>
       </div>
       <div>
-        <span style={{ color: 'red' }}>RED: {getTeamScore(TEAM.RED, game)}</span>{' '}
-        <span style={{ color: 'blue' }}>BLUE: {getTeamScore(TEAM.BLUE, game)}</span>
+        <span style={{ color: 'red' }}>RED: {getTeamScore(Team.RED, game)}</span>{' '}
+        <span style={{ color: 'blue' }}>BLUE: {getTeamScore(Team.BLUE, game)}</span>
       </div>
       <hr />
       <h3>Peers</h3>
@@ -95,6 +95,8 @@ const Status = ({ me, game, myStream, peers, streams }: any) => {
     </div>
   );
 };
+
+const StatusOverLay = {};
 
 const App = () => {
   const [me, setMe] = useState<Player>();
@@ -141,7 +143,7 @@ const App = () => {
               condition={game && me}
               then={() => (
                 <Fragment>
-                  <Status myStream={myStream} me={me} game={game} peers={peers} streams={streams} />
+                  {/*<Debug myStream={myStream} me={me} game={game} peers={peers} streams={streams} />*/}
                   <RoundContainer />
                 </Fragment>
               )}

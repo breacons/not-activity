@@ -9,7 +9,7 @@ import { setAudio, setVideo } from '../../../util/set-video';
 import styles from './WaitInRound.module.sass';
 
 // HTML5 Video cannot be styled from sass
-const fullScreenStyle = {
+export const fullScreenDrawingStyle = {
   position: 'fixed',
   top: 0,
   left: 0,
@@ -18,6 +18,10 @@ const fullScreenStyle = {
   zIndex: -1000,
   width: '100%',
   height: '100vh',
+};
+
+export const fullScreenVideoStyle = {
+  ...fullScreenDrawingStyle,
   transform: 'scaleX(-1)',
 };
 
@@ -60,13 +64,13 @@ export const WaitInRound = () => {
 
   const getPresentByType = () => {
     if (round.roundType === RoundType.draw) {
-      return <video ref={videoRef} style={fullScreenStyle} />;
+      return <video ref={videoRef} style={fullScreenDrawingStyle} />;
     }
 
     if (round.roundType === RoundType.show) {
       return (
         <Fragment>
-          <video ref={videoRef} style={fullScreenStyle} />
+          <video ref={videoRef} style={fullScreenVideoStyle} />
         </Fragment>
       );
     }
