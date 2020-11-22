@@ -1,12 +1,15 @@
-import React, { useEffect, Fragment, useRef } from 'react';
+import React, { useEffect, Fragment, useRef, useContext } from 'react';
+
+import styles from './WaveLength.module.sass';
+import { Team } from '../../../types/player';
+import { StreamContext } from '../../../App';
+import If from "../../../components/If";
 
 interface WaveLengthProps {
   stream?: MediaStream | null;
 }
 
-let x = 100;
-
-function createAudioMeter(audioContext: any, clipLevel = 0.98, averaging = 0.95, clipLag = 750) {
+function createAudioMeter(audioContext: any, clipLevel = 0.95, averaging = 0.95, clipLag = 750) {
   const processor = audioContext.createScriptProcessor(512);
   processor.onaudioprocess = volumeAudioProcess;
   processor.clipping = false;
@@ -16,8 +19,6 @@ function createAudioMeter(audioContext: any, clipLevel = 0.98, averaging = 0.95,
   processor.averaging = averaging || 0.95;
   processor.clipLag = clipLag || 750;
 
-  // this will have no effect, since we don't copy the input to the output,
-  // but works around a current Chrome bug.
   processor.connect(audioContext.destination);
 
   processor.checkClipping = function () {
@@ -40,7 +41,6 @@ function volumeAudioProcess(this: any, event: any) {
   let sum = 0;
   let x: any;
 
-  // Do a root-mean-square on the samples: sum up the squares...
   for (let i = 0; i < bufLength; i++) {
     x = buf[i];
     if (Math.abs(x) >= this.clipLevel) {
@@ -50,61 +50,63 @@ function volumeAudioProcess(this: any, event: any) {
     sum += x * x;
   }
 
-  // ... then take the square root of the sum.
   const rms = Math.sqrt(sum / bufLength);
-
-  // Now smooth this out with the averaging factor applied
-  // to the previous sample - take the max here because we
-  // want "fast attack, slow release."
   this.volume = Math.max(rms, this.volume * this.averaging);
 }
 
-const WIDTH = 300;
+const WIDTH = 120;
 const HEIGHT = 300;
+const fps = 24;
+
 export const WaveLength = ({ stream }: WaveLengthProps) => {
+  const { round, me } = useContext(StreamContext);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     if (!stream || stream.getAudioTracks().length === 0) return;
 
-    console.log('WaveLength', stream, stream.getAudioTracks());
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioContext = new AudioContext();
     const mediaStreamSource = audioContext.createMediaStreamSource(stream);
 
-    // Create a new volume meter and connect it.
     const meter = createAudioMeter(audioContext);
     mediaStreamSource.connect(meter);
 
     const current = canvasRef.current as HTMLCanvasElement;
-    // console.log('offsetTop', current.offsetTop)
     const ctx = current.getContext('2d') as CanvasRenderingContext2D;
 
     const drawLoop = () => {
-      // console.log('drawLoop', meter.volume)
-      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      ctx.clearRect(0, 0, WIDTH * 3, HEIGHT);
 
-      // check if we're currently clipping
-      if (meter.checkClipping()) ctx.fillStyle = 'red';
-      else ctx.fillStyle = 'green';
+      // ctx.fillStyle = 'green';
+      ctx.fillStyle = round?.activePlayer.team === Team.RED ? '#F66689' : '#5E6EC4';
+      // if (meter.checkClipping()) ctx.fillStyle = 'red';
 
-      // draw a bar based on the current volume
-      ctx.fillRect(0, 0, meter.volume * WIDTH * 2, HEIGHT);
+      console.log(meter.checkClipping(), HEIGHT - HEIGHT * meter.volume * 2);
 
-      requestAnimationFrame(drawLoop);
+      ctx.fillRect(0, HEIGHT - HEIGHT * meter.volume * 5, WIDTH * 3, HEIGHT * meter.volume * 5);
+
+      setTimeout(() => {
+        requestAnimationFrame(drawLoop);
+      }, 1000 / fps);
     };
 
     drawLoop();
-
-    // animate(canvas, context);
   }, [stream, canvasRef]);
+
+  if (!round) return null;
+  const activePlayer = round.activePlayer;
 
   return (
     <Fragment>
-      Wavelength {stream?.id}
-      <br />
-      <canvas ref={canvasRef} style={{ width: 300, height: 300, backgroundColor: 'blue' }} />
+      <div className={styles.container}>
+        <canvas ref={canvasRef} style={{ width: WIDTH, height: HEIGHT }} className={styles.canvas} />
+        <div className={styles.activePlayer}>
+        <If condition={me?.id !== activePlayer.id} then={() => `${activePlayer.name} 🎤`}/>
+        </div>
+      </div>
     </Fragment>
   );
 };

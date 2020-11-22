@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { StreamContext } from '../../../App';
-import WaveLength from '../WaveLength';
+import WaveLength from '../WaveLength/WaveLength';
 import { setAudio } from '../../../util/set-video';
 
 interface TalkPresentProps {}

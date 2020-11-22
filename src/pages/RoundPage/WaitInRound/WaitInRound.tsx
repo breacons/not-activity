@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { RoundType } from '../../../types/game';
 import { StreamContext } from '../../../App';
 
-import WaveLength from '../WaveLength';
+import WaveLength from '../WaveLength/WaveLength';
 import If from '../../../components/If';
 import { setAudio, setVideo } from '../../../util/set-video';
 
@@ -22,12 +22,12 @@ export const fullScreenDrawingStyle = {
   zIndex: -1000,
   width: '100%',
   height: '100vh',
-};
+} as React.CSSProperties;
 
 export const fullScreenVideoStyle = {
   ...fullScreenDrawingStyle,
   transform: 'scaleX(-1)',
-};
+} as React.CSSProperties;
 
 export const WaitInRound = () => {
   const { round, streams, gameSocket, me } = useContext(StreamContext);
@@ -82,7 +82,7 @@ export const WaitInRound = () => {
     if (round.roundType === RoundType.talk) {
       return (
         <Fragment>
-          <audio ref={audioRef} muted={false} />
+          <audio ref={audioRef} muted={false} style={{display: 'none'}}/>
           <WaveLength stream={getDisplayedStream(streams)} />
         </Fragment>
       );
@@ -98,7 +98,6 @@ export const WaitInRound = () => {
 
   return (
     <Fragment>
-      {getPresentByType()}
       <If
         condition={me?.team === round?.activePlayer.team || round?.timeLeft <= STEAL_AFTER}
         then={() => (
@@ -124,6 +123,7 @@ export const WaitInRound = () => {
         )}
         else={() => <div>Wait for your turn! You can steal from the other team in the last 10 seconds</div>}
       />
+      {getPresentByType()}
     </Fragment>
   );
 };

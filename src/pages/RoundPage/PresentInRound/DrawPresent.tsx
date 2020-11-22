@@ -10,7 +10,7 @@ interface CanvasElement extends HTMLCanvasElement {
 
 export const DrawPresent = ({}: DrawPresentProps) => {
   const { setMyStream } = useContext(StreamContext);
-  const [size, setSize] = useState({ width: 300, height: 500 });
+  const [size, setSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   const canvas = useRef<HTMLCanvasElement>(null);
   const position = { x: 0, y: 0 };
@@ -82,10 +82,6 @@ export const DrawPresent = ({}: DrawPresentProps) => {
     }
   }, [canvas]);
 
-  // useEffect(() => {
-  //   setVideo(videoRef.current, stream);
-  // }, [stream, videoRef]);
-
   return (
     <Fragment>
       <div style={{ height: size.height, display: 'block' }}>
@@ -93,7 +89,6 @@ export const DrawPresent = ({}: DrawPresentProps) => {
           ref={canvas}
           width={size.width}
           height={size.height}
-          style={{ border: '5px red solid', position: 'fixed' }}
         />
       </div>
     </Fragment>
