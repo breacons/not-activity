@@ -3,7 +3,7 @@ import { Player } from '../../types/player';
 import EnterUserInfo from './components/EnterUserInfo';
 import If from '../../components/If';
 import SelectGame from './components/SelectGame';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation, useParams } from 'react-router';
 import { getLobbyUrl } from '../../url';
 import { StreamContext } from '../../App';
 import './StartPage.css';
@@ -13,12 +13,23 @@ enum StartStep {
   SELECT_GAME = 'SELECT_GAME',
 }
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 export const StartPage = () => {
   const [step, setStep] = useState(StartStep.SELECT_GAME);
   const [player, setPlayer] = useState({ name: 'Maro', emoji: '👆' });
   const history = useHistory();
   const context = useContext(StreamContext);
+  const query = useQuery();
+
+  useEffect(() => {
+    const gameId = query.get('gameId');
+    if (gameId) {
+      updateGame(gameId);
+    }
+  }, []);
 
   const updatePlayer = (updatedPlayer: Partial<Player>) => {
     setPlayer({ ...player, ...updatedPlayer });
