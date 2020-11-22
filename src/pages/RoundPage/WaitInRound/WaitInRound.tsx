@@ -7,6 +7,9 @@ import If from '../../../components/If';
 import { setAudio, setVideo } from '../../../util/set-video';
 
 import styles from './WaitInRound.module.sass';
+import { STEAL_AFTER } from '../../../config';
+import { Team } from '../../../types/player';
+import { UseEnterWrapper } from '../../../util/use-enter';
 
 // HTML5 Video cannot be styled from sass
 export const fullScreenDrawingStyle = {
@@ -85,16 +88,35 @@ export const WaitInRound = () => {
     }
   };
 
+  const onSubmit = () => {
+    console.log(solution);
+    const _ = gameSocket?.submitSolution(solution.toLowerCase());
+
+    return null;
+  };
+
   return (
     <Fragment>
-      <h1 className={styles.heading}>Watching!!!</h1>
       {getPresentByType()}
       <If
-        condition={me?.team === round?.activePlayer.team || round?.timeLeft <= 10}
+        condition={me?.team === round?.activePlayer.team || round?.timeLeft <= STEAL_AFTER}
         then={() => (
           <Fragment>
-            <input type="text" onChange={(event) => setSolution(event.target.value)} />
-            <button onClick={() => gameSocket?.submitSolution(solution)}>Submit solution</button>
+            <UseEnterWrapper allowed={true} callback={onSubmit} />
+            <input
+              type="text"
+              onChange={(event) => setSolution(event.target.value)}
+              className={styles.solutionInput}
+              autoFocus={true}
+              style={{ color: round?.activePlayer.team === Team.RED ? '#F66689' : '#5E6EC4' }}
+              onKeyPress={(ev) => {
+                if (ev.key === 'Enter') {
+                  ev.preventDefault();
+                  onSubmit();
+                }
+              }}
+            />
+            {/*<button onClick={() => gameSocket?.submitSolution(solution)}>Submit solution</button>*/}
           </Fragment>
         )}
         else={() => <div>Wait for your turn! You can steal from the other team in the last 10 seconds</div>}
