@@ -1,12 +1,10 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { Game } from '../../../types/game';
+import React, { Fragment, useState } from 'react';
 import If from '../../../components/If';
 
 interface SelectGameProps {
   updateGame: (gameId?: string) => void;
 }
 
-// TODO: game random string;
 export const SelectGame = ({ updateGame }: SelectGameProps) => {
   const [enteredGameId, setEnteredGameId] = useState<string | null>(null);
 

@@ -1,5 +1,4 @@
 import { GameInfo, GameState } from '../types/game';
-import {strict} from "assert";
 
 export class GameSocket {
   interval: number | undefined = undefined;

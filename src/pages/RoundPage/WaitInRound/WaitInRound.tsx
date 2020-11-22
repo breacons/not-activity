@@ -18,6 +18,7 @@ const fullScreenStyle = {
   zIndex: -1000,
   width: '100%',
   height: '100vh',
+  transform: 'scaleX(-1)',
 };
 
 export const WaitInRound = () => {
@@ -73,7 +74,7 @@ export const WaitInRound = () => {
     if (round.roundType === RoundType.talk) {
       return (
         <Fragment>
-          <audio ref={audioRef} />
+          <audio ref={audioRef} muted={false} />
           <WaveLength stream={getDisplayedStream(streams)} />
         </Fragment>
       );

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, Fragment, useRef, useState } from 'react'
 import { StreamContext } from '../../../App';
 import { setVideo } from '../../../util/set-video';
 
-interface ShowPresentProps {}
 
 const constraints = {
   audio: false, // TODO: set to false
@@ -19,7 +18,7 @@ const constraints = {
   },
 };
 
-export const ShowPresent = ({}: ShowPresentProps) => {
+export const ShowPresent = () => {
   const context = useContext(StreamContext);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [localStream, setLocalStream] = useState<MediaStream | null>();
