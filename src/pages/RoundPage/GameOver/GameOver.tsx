@@ -15,7 +15,8 @@ export const GameOver = () => {
   const redScore = getTeamScore(Team.RED, game);
   const blueScore = getTeamScore(Team.BLUE, game);
   const tie = redScore === blueScore;
-  const iAmWinner = !tie && redScore > blueScore && me?.team === Team.RED;
+  const iAmWinner =
+    (!tie && redScore > blueScore && me?.team === Team.RED) || (redScore < blueScore && me?.team === Team.BLUE);
 
   const history = useHistory();
   return (
