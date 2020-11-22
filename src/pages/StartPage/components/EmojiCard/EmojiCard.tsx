@@ -5,12 +5,15 @@ import styles from './EmojiCard.module.sass';
 interface EmojiCardProps {
   emoji: string;
   onClick: (emoji: string) => void;
+  isSelected: boolean;
 }
 
-export const EmojiCard = ({ emoji, onClick }: EmojiCardProps) => {
+export const EmojiCard = ({ emoji, onClick, isSelected }: EmojiCardProps) => {
   return (
-    <div className={styles.card} onClick={() => onClick(emoji)}>
-      {emoji}
+    <div className="cardWrapper">
+      <div className={`card ${isSelected ? 'selected' : ''}`} onClick={() => onClick(emoji)}>
+        {emoji}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,39 @@
+
+.userNameLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  color: cadetblue;
+}
+
+.cardWrapper {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cards {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.card {
+  width: 50px;
+  height: 50px;
+  border: 1px solid cadetblue;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+}
+
+.card.selected {
+  background-color: cadetblue;
+}

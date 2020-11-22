@@ -13,15 +13,25 @@ export const SelectGame = ({ updateGame }: SelectGameProps) => {
       condition={enteredGameId === null}
       then={() => (
         <Fragment>
-          <button onClick={() => updateGame()}>New game</button>
-          <button onClick={() => setEnteredGameId('')}>Enter game</button>
+          <button className="nextButton" onClick={() => updateGame()}>
+            New game
+          </button>
+          <button className="nextButton" onClick={() => setEnteredGameId('')}>
+            Enter game
+          </button>
         </Fragment>
       )}
       else={() => (
         <Fragment>
-          <label>Enter room number</label>
-          <input onChange={(event) => setEnteredGameId(event.target.value)} />
-          <button disabled={enteredGameId === ''} onClick={() => updateGame(enteredGameId as string)}>
+          <label className="userNameLabel">Enter room number</label>
+          <div className="inputWrapper">
+            <input className="userNameInput" onChange={(event) => setEnteredGameId(event.target.value)} />
+          </div>
+          <button
+            className="nextButton"
+            disabled={enteredGameId === ''}
+            onClick={() => updateGame(enteredGameId as string)}
+          >
             Enter
           </button>
         </Fragment>
