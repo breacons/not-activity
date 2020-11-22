@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 
+import styles from './Speech.module.sass';
+
 const _SpeechRecognition = (window as any).webkitSpeechRecognition;
 const _SpeechGrammarList = (window as any).webkitSpeechGrammarList;
 const _SpeechRecognitionEvent = (window as any).webkitSpeechRecognitionEvent;
@@ -54,5 +56,7 @@ export const Speech = (props: SpeechProps) => {
     return null;
   }
 
-  return <button onClick={onStart}>{isRecording ? `👂` : `🎙`}</button>;
+  return <span onClick={onStart} className={styles.mic}>{isRecording ? `👂` : `🎙`}</span>;
 };
+
+export default Speech;

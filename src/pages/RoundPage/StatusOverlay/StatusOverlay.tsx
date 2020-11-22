@@ -6,7 +6,7 @@ import { Team } from '../../../types/player';
 import { getTeamScore } from '../../../util/get-team-score';
 import { RoundType } from '../../../types/game';
 import If from '../../../components/If';
-import {MAX_TIME_IN_SEC, ROUNDS_TO_WIN} from "../../../config";
+import { MAX_TIME_IN_SEC, ROUNDS_TO_WIN, STEAL_AFTER } from '../../../config';
 
 const translation = {
   [RoundType.show]: 'Show',
@@ -50,6 +50,9 @@ export const StatusOverlay = () => {
           }}
         />
       </div>
+      <div style={{ color: round?.activePlayer.team === Team.RED ? '#F66689' : '#5E6EC4' }} className={styles.activePlayer}>
+        {activePlayer?.name}'s turn
+      </div>
       <If
         condition={me?.id === activePlayer.id}
         then={() => (
@@ -59,9 +62,13 @@ export const StatusOverlay = () => {
           </div>
         )}
         else={() => (
-            <div className={styles.task}>
-               🤔&nbsp;&nbsp;&nbsp;Guess what's this!
-            </div>
+          <div className={styles.task}>
+            <If
+              condition={me?.team === round?.activePlayer.team || round?.timeLeft <= STEAL_AFTER}
+              then={() => <>🤔&nbsp;&nbsp;&nbsp;Guess what's this!</>}
+              else={() => <>🤐&nbsp;&nbsp;&nbsp;{round?.timeLeft - STEAL_AFTER}s until you can steal!</>}
+            />
+          </div>
         )}
       />
 
