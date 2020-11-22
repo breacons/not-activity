@@ -10,7 +10,6 @@ import styles from './WaitInRound.module.sass';
 import { Speech } from './Speech';
 import { STEAL_AFTER } from '../../../config';
 import { Team } from '../../../types/player';
-import { UseEnterWrapper } from '../../../util/use-enter';
 
 // HTML5 Video cannot be styled from sass
 export const fullScreenDrawingStyle = {
@@ -81,18 +80,11 @@ export const WaitInRound = () => {
     if (round.roundType === RoundType.talk) {
       return (
         <Fragment>
-          <audio ref={audioRef} muted={false} style={{display: 'none'}}/>
+          <audio ref={audioRef} muted={false} style={{ display: 'none' }} />
           <WaveLength stream={getDisplayedStream(streams)} />
         </Fragment>
       );
     }
-  };
-
-  const onSubmit = () => {
-    console.log(solution);
-    const _ = gameSocket?.submitSolution(solution.toLowerCase());
-
-    return null;
   };
 
   return (
@@ -101,17 +93,17 @@ export const WaitInRound = () => {
         condition={me?.team === round?.activePlayer.team || round?.timeLeft <= STEAL_AFTER}
         then={() => (
           <Fragment>
-            <UseEnterWrapper allowed={true} callback={onSubmit} />
             <input
               type="text"
               onChange={(event) => setSolution(event.target.value)}
               className={styles.solutionInput}
               autoFocus={true}
               style={{ color: round?.activePlayer.team === Team.RED ? '#F66689' : '#5E6EC4' }}
+              value={solution}
               onKeyPress={(ev) => {
                 if (ev.key === 'Enter') {
                   ev.preventDefault();
-                  onSubmit();
+                  gameSocket?.submitSolution(solution.toLowerCase());
                 }
               }}
             />
@@ -119,14 +111,13 @@ export const WaitInRound = () => {
               answers={[]}
               onResult={(answer) => {
                 setSolution(answer);
-                setTimeout(() => gameSocket?.submitSolution(answer), 500);
+                setTimeout(() => gameSocket?.submitSolution(answer), 1000);
               }}
             />
 
             {/*<button onClick={() => gameSocket?.submitSolution(solution)}>Submit solution</button>*/}
           </Fragment>
         )}
-        else={() => <div>Wait for your turn! You can steal from the other team in the last 10 seconds</div>}
       />
       {getPresentByType()}
     </Fragment>

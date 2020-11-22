@@ -3,7 +3,7 @@ import React, { useEffect, Fragment, useRef, useContext } from 'react';
 import styles from './WaveLength.module.sass';
 import { Team } from '../../../types/player';
 import { StreamContext } from '../../../App';
-import If from "../../../components/If";
+import If from '../../../components/If';
 
 interface WaveLengthProps {
   stream?: MediaStream | null;
@@ -80,13 +80,9 @@ export const WaveLength = ({ stream }: WaveLengthProps) => {
     const drawLoop = () => {
       ctx.clearRect(0, 0, WIDTH * 3, HEIGHT);
 
-      // ctx.fillStyle = 'green';
       ctx.fillStyle = round?.activePlayer.team === Team.RED ? '#F66689' : '#5E6EC4';
-      // if (meter.checkClipping()) ctx.fillStyle = 'red';
 
-      console.log(meter.checkClipping(), HEIGHT - HEIGHT * meter.volume * 2);
-
-      ctx.fillRect(0, HEIGHT - HEIGHT * meter.volume * 5, WIDTH * 3, HEIGHT * meter.volume * 5);
+      ctx.fillRect(0, HEIGHT - HEIGHT * meter.volume * 4, WIDTH * 3, HEIGHT * meter.volume * 4);
 
       setTimeout(() => {
         requestAnimationFrame(drawLoop);
@@ -104,7 +100,7 @@ export const WaveLength = ({ stream }: WaveLengthProps) => {
       <div className={styles.container}>
         <canvas ref={canvasRef} style={{ width: WIDTH, height: HEIGHT }} className={styles.canvas} />
         <div className={styles.activePlayer}>
-        <If condition={me?.id !== activePlayer.id} then={() => `${activePlayer.name} 🎤`}/>
+          <If condition={me?.id !== activePlayer.id} then={() => `${activePlayer.name} 🎤`} />
         </div>
       </div>
     </Fragment>
