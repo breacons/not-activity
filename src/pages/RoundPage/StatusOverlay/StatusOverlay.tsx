@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StreamContext } from '../../../App';
 
 import styles from './StatusOverlay.module.sass';
@@ -6,9 +6,7 @@ import { Team } from '../../../types/player';
 import { getTeamScore } from '../../../util/get-team-score';
 import { RoundType } from '../../../types/game';
 import If from '../../../components/If';
-
-const ROUNDS_TO_WIN = 5;
-const MAX_TIME_IN_SEC = 60;
+import {MAX_TIME_IN_SEC, ROUNDS_TO_WIN} from "../../../config";
 
 const translation = {
   [RoundType.show]: 'Show',
@@ -46,16 +44,24 @@ export const StatusOverlay = () => {
       <div className={styles.timer}>
         <div
           className={styles.timerProgress}
-          style={{ width: `${((round?.timeLeft || MAX_TIME_IN_SEC) * 100) / MAX_TIME_IN_SEC}%` }}
+          style={{
+            width: `${((round?.timeLeft || MAX_TIME_IN_SEC) * 100) / MAX_TIME_IN_SEC}%`,
+            backgroundColor: round?.activePlayer.team === Team.RED ? '#F66689' : '#5E6EC4',
+          }}
         />
       </div>
       <If
         condition={me?.id === activePlayer.id}
         then={() => (
           <div className={styles.task}>
-            {emoji[round?.roundType as RoundType]}&nbsp;&nbsp;{translation[round?.roundType as RoundType]}:{' '}
+            {emoji[round?.roundType as RoundType]}&nbsp;&nbsp;&nbsp;{translation[round?.roundType as RoundType]}:{' '}
             <strong>{round?.answer}</strong>
           </div>
+        )}
+        else={() => (
+            <div className={styles.task}>
+               🤔&nbsp;&nbsp;&nbsp;Guess what's this!
+            </div>
         )}
       />
 

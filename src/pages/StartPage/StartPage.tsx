@@ -13,20 +13,10 @@ enum StartStep {
   SELECT_GAME = 'SELECT_GAME',
 }
 
-// TODO: remove these from prod
-function makeid(length: number) {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
 
 export const StartPage = () => {
-  const [step, setStep] = useState(StartStep.USER_INFO);
-  const [player, setPlayer] = useState({ name: '', emoji: '' });
+  const [step, setStep] = useState(StartStep.SELECT_GAME);
+  const [player, setPlayer] = useState({ name: 'Maro', emoji: '👆' });
   const history = useHistory();
   const context = useContext(StreamContext);
 
@@ -44,7 +34,7 @@ export const StartPage = () => {
 
   useEffect(() => {
     if (context.gameInfo?.id) {
-      navigator.clipboard.writeText(context.gameInfo.id);
+      // navigator.clipboard.writeText(context.gameInfo.id);
       history.push(getLobbyUrl(context.gameInfo.id));
     }
   }, [context.gameInfo]);

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, Fragment, useRef, useState } from 'react';
 import { StreamContext } from '../../../App';
 import { setVideo } from '../../../util/set-video';
-import {fullScreenVideoStyle} from "../WaitInRound";
-
+import { fullScreenVideoStyle } from '../WaitInRound';
+import If from '../../../components/If';
 
 const constraints = {
   audio: false, // TODO: set to false
@@ -22,7 +22,7 @@ const constraints = {
 export const ShowPresent = () => {
   const context = useContext(StreamContext);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [localStream, setLocalStream] = useState<MediaStream | null>();
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
 
   useEffect(() => {
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
@@ -41,7 +41,11 @@ export const ShowPresent = () => {
 
   return (
     <Fragment>
-      <video ref={videoRef} style={fullScreenVideoStyle} />
+      <If
+        condition={localStream}
+        then={() => <video ref={videoRef} style={fullScreenVideoStyle} />}
+        else={() => <span>Loading camera...</span>}
+      />
     </Fragment>
   );
 };
