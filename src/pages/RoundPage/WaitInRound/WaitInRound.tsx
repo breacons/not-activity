@@ -103,7 +103,9 @@ export const WaitInRound = () => {
               onKeyPress={(ev) => {
                 if (ev.key === 'Enter') {
                   ev.preventDefault();
-                  gameSocket?.submitSolution(solution.toLowerCase());
+                  if (gameSocket) {
+                    gameSocket.submitSolution(solution.toLowerCase());
+                  }
                 }
               }}
             />
@@ -111,7 +113,11 @@ export const WaitInRound = () => {
               answers={[]}
               onResult={(answer) => {
                 setSolution(answer);
-                setTimeout(() => gameSocket?.submitSolution(answer), 1000);
+                setTimeout(() => {
+                  if (gameSocket) {
+                    gameSocket.submitSolution(solution.toLowerCase());
+                  }
+                }, 1000);
               }}
             />
 

@@ -1,5 +1,6 @@
 import React, { Fragment, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
+import PlayerCard from './components/PlayerCard';
 import { getGameUrl } from '../../url';
 import If from '../../components/If';
 import { StreamContext } from '../../App';
@@ -30,7 +31,10 @@ export const LobbyPage = ({}) => {
               className={styles.actionButton}
               onClick={() => {
                 if (typeof window.navigator.share === 'function') {
-                  navigator.share({ url: `${window.location.origin}/?joinRoom=${gameInfo.id}` });
+                  navigator.share({
+                    url: `${window.location.origin}/?gameId=${gameInfo.id}`,
+                    text: 'Play Activity with me online!',
+                  });
                 } else {
                   console.error('No navigator share here...');
                 }

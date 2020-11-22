@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import StartPage from './pages/StartPage';
 import LobbyPage from './pages/LobbyPage';
@@ -17,7 +17,6 @@ import { getTeamScore } from './util/get-team-score';
 import { URL_GAME, URL_GAMES, URL_LOBBIES, URL_LOBBY, URL_START } from './url';
 import './App.css';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
 
 export const StreamContext = React.createContext({
   game: {} as GameState | undefined,
@@ -118,7 +117,6 @@ const App = () => {
         setShowServiceWorkerUpdate(true);
       },
     });
-    reportWebVitals();
   }, []);
 
   useEffect(() => {
@@ -146,7 +144,7 @@ const App = () => {
         solutions,
       }}
     >
-      <HashRouter>
+      <Router basename={process.env.PUBLIC_URL.split('/').pop()}>
         <Switch>
           <Route exact path={URL_START}>
             <StartPage />
@@ -172,7 +170,7 @@ const App = () => {
           <Redirect exact from={URL_LOBBIES} to={URL_START} />
           <Redirect exact to={URL_START} />
         </Switch>
-      </HashRouter>
+      </Router>
       <If
         condition={showServiceWorkerUpdate}
         then={() => (
