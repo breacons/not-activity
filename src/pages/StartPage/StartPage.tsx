@@ -6,6 +6,7 @@ import SelectGame from './components/SelectGame';
 import { useHistory } from 'react-router';
 import { getLobbyUrl } from '../../url';
 import { StreamContext } from '../../App';
+import './StartPage.css';
 
 enum StartStep {
   USER_INFO = 'USER_INFO',
@@ -24,8 +25,8 @@ function makeid(length: number) {
 }
 
 export const StartPage = () => {
-  const [step, setStep] = useState(StartStep.SELECT_GAME);
-  const [player, setPlayer] = useState({ name: makeid(8), emoji: '😅' });
+  const [step, setStep] = useState(StartStep.USER_INFO);
+  const [player, setPlayer] = useState({ name: '', emoji: '' });
   const history = useHistory();
   const context = useContext(StreamContext);
 
@@ -50,8 +51,10 @@ export const StartPage = () => {
 
   return (
     <Fragment>
-      <div>
-        This is <strong>not</strong> an Activity game
+      <div className="pageTitle">
+        <h1>
+          This is <strong>not</strong> an Activity game
+        </h1>
       </div>
       <div>
         <If
@@ -59,7 +62,11 @@ export const StartPage = () => {
           then={() => (
             <Fragment>
               <EnterUserInfo updatePlayer={updatePlayer} player={player} />
-              <button disabled={!player.emoji || !player.name} onClick={() => setStep(StartStep.SELECT_GAME)}>
+              <button
+                className="nextButton"
+                disabled={!player.emoji || !player.name}
+                onClick={() => setStep(StartStep.SELECT_GAME)}
+              >
                 Next
               </button>
             </Fragment>
