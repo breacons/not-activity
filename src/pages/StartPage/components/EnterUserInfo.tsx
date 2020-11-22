@@ -28,6 +28,7 @@ export const EnterPlayerInfo = ({ updatePlayer, player }: EnterPlayerInfoProps) 
           className={styles.userNameInput}
           onChange={(event) => updatePlayer({ name: event.target.value })}
           id="name"
+          placeholder={'Awesome Joe'}
         />
       </div>
       <br />

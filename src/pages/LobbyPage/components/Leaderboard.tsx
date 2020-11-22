@@ -10,8 +10,8 @@ export const LeaderboardComponent = (props: { leaderboard: Leaderboard }) => {
   return (
     <div className={styles.players}>
       <div className={styles.playersColumn}>
-        <h3 className={styles.teamTitle}>
-          <span className="blue">Blue</span> Team{' '}
+        <h3 className={styles.teamTitleBlue}>
+          🔵&nbsp;&nbsp;Blue Team{' '}
           {!!leaderboard.teamScores[Team.BLUE] && <span className="score">{leaderboard.teamScores[Team.BLUE]}</span>}
         </h3>
         {leaderboard.playerLeaderboard
@@ -21,9 +21,9 @@ export const LeaderboardComponent = (props: { leaderboard: Leaderboard }) => {
           ))}
       </div>
       <div className={styles.playersColumn}>
-        <h3 className={styles.teamTitle}>
-          <span className="red">Red</span> Team{' '}
-          {!!leaderboard.teamScores[Team.RED] && <span className="score">{leaderboard.teamScores[Team.RED]}</span>}
+        <h3 className={styles.teamTitleRed}>
+          {!!leaderboard.teamScores[Team.RED] && <span className="score">{leaderboard.teamScores[Team.RED]}</span>} Red
+          Team&nbsp;&nbsp;🔴
         </h3>
 
         {leaderboard.playerLeaderboard

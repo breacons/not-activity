@@ -1,11 +1,26 @@
+.container
+  flex: 1
+  height: 100vh
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+
+.header
+  padding: 0 1rem
+
 .actionButtons
   display: flex
   justify-content: space-between
-  /* margin-top: -1rem */
-  width: 90%
+  width: 100%
   margin: 0 auto
-  margin-top: -1rem
 
+.gameId
+  text-align: center
+
+.gameIdCode
+  background-color: #f0f0f0
+  padding: 5px 10px
+  border-radius: 5px
 
 .actionButton
   flex: 1
@@ -13,8 +28,15 @@
   padding: 6px 10px
   font-size: 0.8rem
   background: none
-  color: cadetblue
-  border: 1px solid cadetblue
+  color: #5E6EC4
+  border: 1px solid #5E6EC4
+  border-radius: 20px
+
+  &:disabled
+    opacity: 0.5
+
+  &:focus
+    outline: none
 
 
 .players
@@ -29,35 +51,38 @@
 
 .playerCardRed, .playerCardBlue
   padding: 10px 10px
-  color: white
   font-weight: bold
   border-radius: 6px
   display: flex
   align-items: center
   justify-content: center
-  border-radius: 6px
+  margin-bottom: 1rem
+
 
 
 .playerCardBlue
-  box-shadow: #5E6EC4 0px 0px 10px 0px
+  box-shadow: #5e6ec442 0px 0px 10px 0px
+  justify-content: flex-start
 
 
 .playerCardRed
-  box-shadow: #F66689 0px 0px 10px 0px
+  box-shadow: rgba(246, 102, 137, 0.39) 0px 0px 10px 0px
+  justify-content: flex-end
+
+.divider
+  border-color: rgba(221, 221, 221, 0.18)
 
 
-
-.teamTitle
-  text-align: center
+.teamTitleRed, teamTitleBlue
   font-weight: 600
 
 
-.teamTitle .red
-  color: red
+.teamTitleRed
+  text-align: right
 
 
-.teamTitle .blue
-  color: blue
+.teamTitleBlue
+  text-align: left
 
 
 .atLeastLabel
@@ -68,7 +93,7 @@
 
 
 .labelEmoji
-  margin-right: 0.5rem
+  margin: 0rem 1rem
 
 
 .score
