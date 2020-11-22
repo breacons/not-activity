@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { getGameUrl } from '../../url';
 import If from '../../components/If';
@@ -55,7 +55,9 @@ export const LobbyPage = ({}) => {
                 onClick={() => {
                   if (typeof window.navigator.share === 'function') {
                     navigator.share({
-                      url: `${window.location.origin}/?gameId=${gameInfo.id}`,
+                      url: `${window.location.origin}/${window.location.pathname.split('/')[0]}/start?gameId=${
+                        gameInfo.id
+                      }`,
                       text: 'Play Activity with me online!',
                     });
                   } else {
