@@ -7,6 +7,7 @@ import If from '../../../components/If';
 import { setAudio, setVideo } from '../../../util/set-video';
 
 import styles from './WaitInRound.module.sass';
+import { Speech } from './Speech';
 
 // HTML5 Video cannot be styled from sass
 export const fullScreenDrawingStyle = {
@@ -95,6 +96,7 @@ export const WaitInRound = () => {
           <Fragment>
             <input type="text" onChange={(event) => setSolution(event.target.value)} />
             <button onClick={() => gameSocket?.submitSolution(solution)}>Submit solution</button>
+            <Speech answers={[]} onResult={(answer) => gameSocket?.submitSolution(answer)} />
           </Fragment>
         )}
         else={() => <div>Wait for your turn! You can steal from the other team in the last 10 seconds</div>}
