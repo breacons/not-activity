@@ -32,7 +32,7 @@ export const LobbyPage = ({}) => {
               </span>
               !
             </h1>
-            <p>
+            <p className={styles.description}>
               Share this ID with your friends so they can join you in conquering Team{' '}
               {me?.team !== Team.RED ? 'Red' : 'Blue'}:
             </p>

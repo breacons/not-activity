@@ -20,13 +20,25 @@ export const RoundContainer = () => {
         console.log('Correct solution!');
         if (reward && reward.current) {
           setRewardType('confetti');
-          setTimeout(() => (reward as any).current.rewardMe(), 100);
+          setTimeout(() => {
+            const { current } = reward as any;
+
+            if (current) {
+              current.rewardMe();
+            }
+          }, 100);
         }
       } else {
         console.log('Wrong solution');
         if (reward && reward.current) {
           setRewardType('emoji');
-          setTimeout(() => (reward as any).current.rewardMe(), 100);
+          setTimeout(() => {
+            const { current } = reward as any;
+
+            if (current) {
+              current.rewardMe();
+            }
+          }, 100);
         }
       }
     }

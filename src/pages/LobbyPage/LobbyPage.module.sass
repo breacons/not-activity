@@ -22,6 +22,10 @@
   padding: 5px 10px
   border-radius: 5px
 
+.description
+  text-align: center
+
+
 .actionButton
   flex: 1
   margin: 0.3rem
@@ -55,19 +59,24 @@
   border-radius: 6px
   display: flex
   align-items: center
-  justify-content: center
+  justify-content: space-between
   margin-bottom: 1rem
+
 
 
 
 .playerCardBlue
   box-shadow: #5e6ec442 0px 0px 10px 0px
-  justify-content: flex-start
+  //justify-content: flex-start
+  & .labelEmoji
+    margin-right: 0.5rem
 
 
 .playerCardRed
   box-shadow: rgba(246, 102, 137, 0.39) 0px 0px 10px 0px
-  justify-content: flex-end
+  //justify-content: flex-end
+  & .labelEmoji
+    margin-left: 0.5rem
 
 .divider
   border-color: rgba(221, 221, 221, 0.18)
@@ -92,16 +101,19 @@
   color: gray
 
 
-.labelEmoji
-  margin: 0rem 1rem
 
 
-.score
-  background: gray
+
+.score, .playerScoreBlue, .playerScoreRed
+  background: #f2f2f2
   color: black
   border-radius: 6px
   display: inline-block
   padding: 3px 6px
+  margin: 0 0.1rem
+
+.playerScoreBlue, .playerScoreRed
+  font-size: smaller
 
 .nextButton
   padding: 20px 20px

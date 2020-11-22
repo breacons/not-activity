@@ -8,11 +8,7 @@ export interface PlayerCardProps {
 }
 
 export const PlayerCard = ({ player }: PlayerCardProps) => {
-  const name = (
-    <span>
-      {player.name} {!!player.score && `- ${player.score}`}
-    </span>
-  );
+  const name = <span>{player.name}</span>;
   const emoji = <span className={styles.labelEmoji}>{player.emoji}</span>;
   return (
     <div className={player.team === Team.RED ? styles.playerCardRed : styles.playerCardBlue}>
@@ -20,12 +16,25 @@ export const PlayerCard = ({ player }: PlayerCardProps) => {
         condition={player.team === Team.BLUE}
         then={() => (
           <>
-            {emoji} {name} {!!player.score && ` - ${player.score}`}
+            <span>
+              {emoji} {name}
+            </span>{' '}
+            <If
+              condition={!!player.score}
+              then={() => <span className={styles.playerScoreBlue}>{player.score}</span>}
+            />
           </>
         )}
         else={() => (
           <>
-            {!!player.score && `${player.score} - `} {name} {emoji}
+            <If
+              condition={!!player.score}
+              then={() => <span className={styles.playerScoreRed}>{player.score}</span>}
+              else={() => <span />}
+            />{' '}
+            <span>
+              {name} {emoji}
+            </span>
           </>
         )}
       />

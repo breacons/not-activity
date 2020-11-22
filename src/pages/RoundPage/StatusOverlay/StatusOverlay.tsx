@@ -41,6 +41,14 @@ export const StatusOverlay = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.personalInfo}>
+        <div>
+          {me?.team === Team.BLUE ? '🔵' : '🔴'}{' '}
+          <span className={styles.name} style={{ color: me?.team === Team.RED ? '#F66689' : '#5E6EC4' }}>
+            {me?.name}
+          </span>
+        </div>
+      </div>
       <div className={styles.timer}>
         <div
           className={styles.timerProgress}
@@ -50,7 +58,10 @@ export const StatusOverlay = () => {
           }}
         />
       </div>
-      <div style={{ color: round?.activePlayer.team === Team.RED ? '#F66689' : '#5E6EC4' }} className={styles.activePlayer}>
+      <div
+        style={{ color: round?.activePlayer.team === Team.RED ? '#F66689' : '#5E6EC4' }}
+        className={styles.activePlayer}
+      >
         {activePlayer?.name}'s turn
       </div>
       <If
