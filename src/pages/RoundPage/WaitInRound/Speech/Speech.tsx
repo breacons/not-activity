@@ -5,9 +5,8 @@ import styles from './Speech.module.sass';
 
 const _SpeechRecognition = (window as any).webkitSpeechRecognition;
 const _SpeechGrammarList = (window as any).webkitSpeechGrammarList;
-const _SpeechRecognitionEvent = (window as any).webkitSpeechRecognitionEvent;
 
-const answers = ['pizza', 'elephant', 'spaceship'];
+const answers = ['pizza', 'elephant', 'spaceship', 'hackathon', 'weekend'];
 const grammar = '#JSGF V1.0; grammar answers; public <answer> = ' + answers.join(' | ') + ' ;';
 
 export const isSpeechAvailable = _SpeechRecognition && _SpeechGrammarList;

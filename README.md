@@ -1,4 +1,12 @@
-# Getting Started with Create React App
+# Getting Started with Not Activity
+## Building and running
+This is a `React` frontend for our awesome Activity game. To run it, please `npm install` and `npm run start` to serve the frontend locally. Make sure you have a `.env` file set up with:
+```
+REACT_APP_ENDPOINT=127.0.0.1:8080
+```
+
+## Deployment
+Make sure your `gcloud` CLI is logged in and you have selected the project. Run `./deploy.sh` to deploy the app to Cloud Storage.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
