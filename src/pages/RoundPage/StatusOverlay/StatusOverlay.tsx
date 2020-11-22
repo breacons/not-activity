@@ -76,7 +76,15 @@ export const StatusOverlay = () => {
           <div className={styles.task}>
             <If
               condition={me?.team === round?.activePlayer.team || round?.timeLeft <= STEAL_AFTER}
-              then={() => <>🤔&nbsp;&nbsp;&nbsp;Guess what's this!</>}
+              then={() => (
+                <>
+                  {me?.team === round?.activePlayer.team ? (
+                    <>🤔&nbsp;&nbsp; Guess what's this!</>
+                  ) : (
+                    <>😬&nbsp;&nbsp; Guess and steal!</>
+                  )}
+                </>
+              )}
               else={() => <>🤐&nbsp;&nbsp;&nbsp;{round?.timeLeft - STEAL_AFTER}s until you can steal!</>}
             />
           </div>
