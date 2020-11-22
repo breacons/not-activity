@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import If from '../../../components/If';
 
+import styles from '../StartPage.module.sass';
+
 interface SelectGameProps {
   updateGame: (gameId?: string) => void;
 }
@@ -13,11 +15,11 @@ export const SelectGame = ({ updateGame }: SelectGameProps) => {
       condition={enteredGameId === null}
       then={() => (
         <Fragment>
-          <button className="nextButton" onClick={() => updateGame()}>
-            New game
+          <button className={styles.nextButton} onClick={() => updateGame()}>
+            Create new game
           </button>
-          <button className="nextButton" onClick={() => setEnteredGameId('')}>
-            Enter game
+          <button className={styles.nextButton} onClick={() => setEnteredGameId('')}>
+            Enter existing game
           </button>
         </Fragment>
       )}
@@ -28,7 +30,7 @@ export const SelectGame = ({ updateGame }: SelectGameProps) => {
             <input className="userNameInput" onChange={(event) => setEnteredGameId(event.target.value)} />
           </div>
           <button
-            className="nextButton"
+            className={styles.nextButton}
             disabled={enteredGameId === ''}
             onClick={() => updateGame(enteredGameId as string)}
           >

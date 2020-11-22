@@ -6,17 +6,17 @@ import SelectGame from './components/SelectGame';
 import { useHistory } from 'react-router';
 import { getLobbyUrl } from '../../url';
 import { StreamContext } from '../../App';
-import './StartPage.css';
+import styles from './StartPage.module.sass';
+import logo from './image/logo.svg';
 
 enum StartStep {
   USER_INFO = 'USER_INFO',
   SELECT_GAME = 'SELECT_GAME',
 }
 
-
 export const StartPage = () => {
-  const [step, setStep] = useState(StartStep.SELECT_GAME);
-  const [player, setPlayer] = useState({ name: 'Maro', emoji: '👆' });
+  const [step, setStep] = useState(StartStep.USER_INFO);
+  const [player, setPlayer] = useState({ name: '', emoji: '' });
   const history = useHistory();
   const context = useContext(StreamContext);
 
@@ -40,11 +40,12 @@ export const StartPage = () => {
   }, [context.gameInfo]);
 
   return (
-    <Fragment>
-      <div className="pageTitle">
-        <h1>
-          This is <strong>not</strong> an Activity game
-        </h1>
+    <div className={styles.container}>
+      <div className={styles.pageTitle}>
+        <img src={logo} className={styles.logo} />
+        <div className={styles.subTitle}>
+            This is definitely <strong>not an online Activity</strong> game implemented with the dopest Web APIs. 🔥
+        </div>
       </div>
       <div>
         <If
@@ -53,11 +54,11 @@ export const StartPage = () => {
             <Fragment>
               <EnterUserInfo updatePlayer={updatePlayer} player={player} />
               <button
-                className="nextButton"
+                className={styles.nextButton}
                 disabled={!player.emoji || !player.name}
                 onClick={() => setStep(StartStep.SELECT_GAME)}
               >
-                Next
+                Let's go!
               </button>
             </Fragment>
           )}
@@ -71,7 +72,7 @@ export const StartPage = () => {
           )}
         />
       </div>
-    </Fragment>
+    </div>
   );
 };
 

@@ -10,8 +10,8 @@ interface EmojiCardProps {
 
 export const EmojiCard = ({ emoji, onClick, isSelected }: EmojiCardProps) => {
   return (
-    <div className="cardWrapper">
-      <div className={`card ${isSelected ? 'selected' : ''}`} onClick={() => onClick(emoji)}>
+    <div className={styles.cardWrapper}>
+      <div className={isSelected ? styles.cardSelected : styles.card} onClick={() => onClick(emoji)}>
         {emoji}
       </div>
     </div>

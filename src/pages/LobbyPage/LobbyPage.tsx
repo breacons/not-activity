@@ -1,12 +1,11 @@
 import React, { Fragment, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import PlayerCard from './components/PlayerCard';
 import { getGameUrl } from '../../url';
 import If from '../../components/If';
 import { StreamContext } from '../../App';
-import './LobbyPage.css';
-import { Team } from '../../types/player';
 import { LeaderboardComponent } from './components/Leaderboard';
+
+import styles from './LobbyPage.module.sass';
 
 export const LobbyPage = ({}) => {
   const history = useHistory();
@@ -22,13 +21,13 @@ export const LobbyPage = ({}) => {
     <>
       {gameInfo && (
         <Fragment>
-          <h2 className="pageTitle">{gameInfo.id}</h2>
-          <div className="actionButtons">
-            <button className="nextButton actionButton" onClick={() => navigator.clipboard.writeText(gameInfo.id)}>
+          <h2 className={styles.pageTitle}>{gameInfo.id}</h2>
+          <div className={styles.actionButtons}>
+            <button className={styles.actionButton} onClick={() => navigator.clipboard.writeText(gameInfo.id)}>
               Copy
             </button>
             <button
-              className="nextButton actionButton"
+              className={styles.actionButton}
               onClick={() => {
                 if (typeof window.navigator.share === 'function') {
                   navigator.share({ url: `${window.location.origin}/?joinRoom=${gameInfo.id}` });
@@ -44,10 +43,10 @@ export const LobbyPage = ({}) => {
 
           <If
             condition={gameInfo.players.length < 2}
-            then={() => <span className="atLeastLabel">At least 2 players are needed to start the game!</span>}
+            then={() => <span className={styles.atLeastLabel}>At least 2 players are needed to start the game!</span>}
             else={() => (
               <button
-                className="nextButton"
+                className={styles.nextButton}
                 onClick={() => {
                   if (gameSocket) {
                     gameSocket.startGame();
