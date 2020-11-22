@@ -5,6 +5,8 @@ This is a `React` frontend for our awesome Activity game. To run it, please `npm
 REACT_APP_ENDPOINT=127.0.0.1:8080
 ```
 
+The backend is available in [this](https://github.com/breacons/not-activity-backend) repository.
+
 ## Deployment
 Make sure your `gcloud` CLI is logged in and you have selected the project. Run `./deploy.sh` to deploy the app to Cloud Storage.
 
