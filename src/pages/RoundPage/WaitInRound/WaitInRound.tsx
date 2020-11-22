@@ -115,7 +115,7 @@ export const WaitInRound = () => {
                 setSolution(answer);
                 setTimeout(() => {
                   if (gameSocket) {
-                    gameSocket.submitSolution(solution.toLowerCase());
+                    gameSocket.submitSolution(answer.toLowerCase());
                   }
                 }, 1000);
               }}
