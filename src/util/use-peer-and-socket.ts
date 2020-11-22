@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import SimplePeer, { SignalData } from 'simple-peer';
-import { GameInfo, GameState } from '../types/game';
+import { GameInfo, GameState, Solution } from '../types/game';
 import { GameSocket } from '../socket/gameSocket';
 import _ from 'lodash';
 import io from 'socket.io-client';
@@ -34,6 +34,7 @@ export const usePeerAndSocket = (localStream: MediaStream | null) => {
   const [game, setGame] = useState<GameState>();
   const [gameInfo, setGameInfo] = useState<GameState>();
   const [gameSocket, setGameSocket] = useState<GameSocket>();
+  const [solutions, setSolutions] = useState<Solution[]>([]);
 
   const addPeer = (socketId: string, isInitiator: boolean, socket: SocketIOClient.Socket) => {
     const newPeer = new SimplePeer({
@@ -106,6 +107,7 @@ export const usePeerAndSocket = (localStream: MediaStream | null) => {
       onGameState: (gameState) => {
         setGame(gameState);
       },
+      onSolution: (solution) => setSolutions([...solutions, solution]),
     });
 
     setGameSocket(gameSocket);
@@ -144,7 +146,7 @@ export const usePeerAndSocket = (localStream: MediaStream | null) => {
     }
   }, [localStream, peers]);
 
-  return { peers, streams, game, gameInfo, gameSocket, myId: socket.id };
+  return { peers, streams, game, gameInfo, gameSocket, solutions, myId: socket.id };
 };
 
 export default usePeerAndSocket;

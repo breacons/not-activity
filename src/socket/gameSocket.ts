@@ -1,13 +1,18 @@
-import { GameInfo, GameState } from '../types/game';
+import { GameInfo, GameState, Solution } from '../types/game';
 
 export class GameSocket {
   interval: number | undefined = undefined;
   constructor(
     private socket: SocketIOClient.Socket,
-    private callbacks: { onGameInfo: (info: GameState) => void; onGameState: (gameState: GameState) => void },
+    private callbacks: {
+      onGameInfo: (info: GameState) => void;
+      onGameState: (gameState: GameState) => void;
+      onSolution: (solution: Solution) => void;
+    },
   ) {
     socket.on('gameInfo', (payload: GameState) => this.onGameInfo(payload));
     socket.on('gameState', (payload: GameState) => this.onGameState(payload));
+    socket.on('solution', (payload: Solution) => this.onSolution(payload));
   }
 
   createGame(playerName: string, webRtc: any, emoji: string) {
@@ -45,6 +50,10 @@ export class GameSocket {
         }
       }, 1000);
     }
+  }
+
+  onSolution(solution: Solution) {
+    this.callbacks.onSolution(solution);
   }
 
   destroy() {
