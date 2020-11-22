@@ -38,6 +38,7 @@ export const Speech = (props: SpeechProps) => {
         const answer = event.results[0][0].transcript;
         console.log('Confidence: ' + event.results[0][0].confidence);
         props.onResult(answer);
+        setIsRecording(false);
       };
     }
   }, []);

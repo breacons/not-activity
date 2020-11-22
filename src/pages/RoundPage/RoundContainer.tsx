@@ -5,16 +5,20 @@ import WaitInRound from './WaitInRound';
 import StatusOverlay from './StatusOverlay';
 
 import If from '../../components/If';
-
+import { GameOver } from './GameOver';
 
 export const RoundContainer = () => {
-  const { round, me } = useContext(StreamContext);
+  const { round, me, game } = useContext(StreamContext);
 
   if (!round) {
     return <span>Loading...</span>;
   }
 
   const activePlayer = round.activePlayer;
+
+  if (game?.isOver) {
+    return <GameOver />;
+  }
 
   return (
     <Fragment>
