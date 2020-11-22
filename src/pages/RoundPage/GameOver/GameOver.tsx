@@ -15,8 +15,7 @@ export const GameOver = () => {
   const redScore = getTeamScore(Team.RED, game);
   const blueScore = getTeamScore(Team.BLUE, game);
   const tie = redScore === blueScore;
-  const iAmWinner =
-    (!tie && redScore > blueScore && me?.team === Team.RED) || (redScore < blueScore && me?.team === Team.BLUE);
+  const iAmWinner = (redScore > blueScore && me?.team === Team.RED) || (redScore < blueScore && me?.team === Team.BLUE);
 
   const history = useHistory();
   return (
@@ -24,11 +23,16 @@ export const GameOver = () => {
       <div className={styles.container}>
         <div className={styles.header}>
           <h1>
-            <If condition={tie} then={() => "Wow! It's a tie 😳"} />
             <If
-              condition={iAmWinner}
-              then={() => `Nice! You and Team ${me?.team === Team.RED ? 'Red' : 'Blue'} won! 🏆`}
-              else={() => `Oh snap, Team ${me?.team !== Team.RED ? 'Blue' : 'Red'} won 😕. How about a rematch?`}
+              condition={tie}
+              then={() => "Wow! It's a tie 😳"}
+              else={() => (
+                <If
+                  condition={iAmWinner}
+                  then={() => `Nice! You and Team ${me?.team === Team.RED ? 'Red' : 'Blue'} won! 🏆`}
+                  else={() => `Oh snap, Team ${me?.team !== Team.RED ? 'Blue' : 'Red'} won 😕. How about a rematch?`}
+                />
+              )}
             />
           </h1>
           <hr className={styles.divider} />
