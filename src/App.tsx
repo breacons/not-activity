@@ -17,7 +17,6 @@ import { getTeamScore } from './util/get-team-score';
 import { URL_GAME, URL_GAMES, URL_LOBBIES, URL_LOBBY, URL_START } from './url';
 import './App.css';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
 
 export const StreamContext = React.createContext({
   game: {} as GameState | undefined,
@@ -118,7 +117,6 @@ const App = () => {
         setShowServiceWorkerUpdate(true);
       },
     });
-    reportWebVitals();
   }, []);
 
   useEffect(() => {
