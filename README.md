@@ -5,7 +5,7 @@ This is a `React` frontend for our awesome Activity game. To run it, please `npm
 REACT_APP_ENDPOINT=127.0.0.1:8080
 ```
 
-The backend is available in [this](https://github.com/breacons/not-activity-backend) repository. You need a running local backend to play this game locally. If you wish to play with the deployed version, you can do so [here](https://storage.googleapis.com/hacktivity-296321.appspot.com/start).
+The backend is available in [this](https://github.com/breacons/not-activity-backend) repository. You need a running local backend to play this game locally. If you wish to play with the deployed version, you can do so [here](https://storage.googleapis.com/hacktivity-296321.appspot.com/index.html/start).
 
 ## Deployment
 Make sure your `gcloud` CLI is logged in and you have selected the project. Run `./deploy.sh` to deploy the app to Cloud Storage.
@@ -14,7 +14,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Gameplay
 
-> Important! We have tested this game on Chrome on desktop browsers and Android phones. This is will give you the best experience.
+> Important! We have tested this game on Chrome on desktop browsers and Android phones. This is will give you the best experience. Also, the share links do not open in Facebook Messenger's built-in browser for some magical reason. Open these in Chrome instead.
 
 In order to play the game, you need to: 
 * Input your name and create a new Game
